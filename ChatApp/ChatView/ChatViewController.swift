@@ -12,14 +12,17 @@ class ChatViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .yellow
+        view.backgroundColor = .gray
         
-       
+        
         let senderMessageView = MessageView()
         let receiverMessageView = MessageView()
         
+        
         senderMessageView.setupView()
         receiverMessageView.setupView()
+      
+    
         
         let stackView = UIStackView(arrangedSubviews: [senderMessageView, receiverMessageView])
         stackView.axis = .vertical
@@ -33,6 +36,12 @@ class ChatViewController: UIViewController {
         stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        senderMessageView.textInput()
+        receiverMessageView.textInput()
+       
     }
+    
+    
 }
 
