@@ -9,16 +9,13 @@ import UIKit
 
 class ChatViewController: UIViewController {
     
+    let senderMessageView = MessageView()
+    let receiverMessageView = MessageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .gray
-        
-        let senderMessageView = MessageView()
-        let receiverMessageView = MessageView()
-        
-        senderMessageView.setupView()
-        receiverMessageView.setupView()
+        view.backgroundColor = .yellow
         
         let stackView = UIStackView(arrangedSubviews: [senderMessageView, receiverMessageView])
         stackView.axis = .vertical
@@ -28,17 +25,29 @@ class ChatViewController: UIViewController {
         view.addSubview(stackView)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            
+        ])
+        
+        setupStackView()
+        
+    }
+    
+    func setupStackView() {
+        senderMessageView.setupView()
+        receiverMessageView.setupView()
         
         senderMessageView.textInput()
         receiverMessageView.textInput()
         
         senderMessageView.setupButton()
         receiverMessageView.setupButton()
-        
     }
+    
+    
 }
 
