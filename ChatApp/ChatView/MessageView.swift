@@ -9,45 +9,49 @@ import Foundation
 import UIKit
 
 class MessageView: UIView, UITextViewDelegate {
-   
+    let textView = UITextField()
+    let button = UIButton(type: .custom)
     
     func setupView() {
         backgroundColor = .white
-      }
+    }
     
-   
+    func setupButton() {
+        
+        button.setImage(UIImage(named: "send"), for: .normal)
+        
+        let buttonSize = CGSize(width: 40, height: 40)
+        button.frame = CGRect(origin: CGPoint.zero, size: buttonSize)
+        
+        let buttonView = UIView(frame: button.frame)
+        buttonView.addSubview(button)
+        buttonView.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: buttonSize.width + 16, height: buttonSize.height))
+        
+        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 40))
+        
+        textView.rightView = buttonView
+        textView.rightViewMode = .always
+        textView.leftView = leftView
+        textView.leftViewMode = .always
+    }
     
     func textInput() {
-
-        let textView = UITextView()
-        //textView.frame = CGRect(x: 50, y:60, width: 50, height: 30) // set the size and position of the UITextView
-        textView.font = UIFont.systemFont(ofSize: 10) // set the font size
-        textView.textColor = .white // set the text color
-        textView.textAlignment = .left // set the text alignment
-        textView.isEditable = true // set if the text view is editable
-        textView.isSelectable = true // set if the text view is selectable
-        textView.backgroundColor = .white // set the background color
-        textView.layer.borderWidth = 1.0 // set the border width
-        textView.layer.borderColor = UIColor.systemPink.cgColor // set the border color
+        
+        textView.font = UIFont.systemFont(ofSize: 20)
+        textView.textColor = .black
+        textView.textAlignment = .left
+        textView.backgroundColor = .white
+        textView.layer.borderWidth = 1.0
+        textView.layer.borderColor = UIColor.systemPink.cgColor
         textView.layer.cornerRadius = 25
         self.addSubview(textView)
         
         textView.translatesAutoresizingMaskIntoConstraints = false
-       
-        
-               NSLayoutConstraint.activate([
-                
-                
-                textView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-                textView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
-                textView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
-                textView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.15)
-               ])
-        
-       
-        
-       }
-      }
-    
-    
-
+        NSLayoutConstraint.activate([
+            textView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            textView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
+            textView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
+            textView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.15)
+        ])
+    }
+}

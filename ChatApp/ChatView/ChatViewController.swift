@@ -8,21 +8,17 @@
 import UIKit
 
 class ChatViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .gray
         
-        
         let senderMessageView = MessageView()
         let receiverMessageView = MessageView()
         
-        
         senderMessageView.setupView()
         receiverMessageView.setupView()
-      
-    
         
         let stackView = UIStackView(arrangedSubviews: [senderMessageView, receiverMessageView])
         stackView.axis = .vertical
@@ -39,9 +35,10 @@ class ChatViewController: UIViewController {
         
         senderMessageView.textInput()
         receiverMessageView.textInput()
-       
+        
+        senderMessageView.setupButton()
+        receiverMessageView.setupButton()
+        
     }
-    
-    
 }
 
