@@ -8,12 +8,38 @@
 import Foundation
 import UIKit
 
-class MessageView: UIView, UITextViewDelegate {
+class MessageView: UIView, UITextViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    
     let textView = UITextField()
     let button = UIButton(type: .custom)
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    
     
     func setupView() {
         backgroundColor = .white
+        setupCollectionView()
+        setupButton()
+        textInput()
+    }
+    
+    func setupCollectionView() {
+        
+        collectionView.backgroundColor = .red
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        self.addSubview(collectionView)
+        
+        self.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
+            collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
+            
+        ])
     }
     
     func setupButton() {
@@ -51,7 +77,20 @@ class MessageView: UIView, UITextViewDelegate {
             textView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
             textView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
             textView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
-            textView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.15)
+            textView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.15),
+            textView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 16)
         ])
     }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        cell.backgroundColor = .blue
+        
+        return cell
+    }
+    
 }

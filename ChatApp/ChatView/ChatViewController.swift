@@ -41,13 +41,6 @@ class ChatViewController: UIViewController {
         senderMessageView.setupView()
         receiverMessageView.setupView()
         
-        senderMessageView.textInput()
-        receiverMessageView.textInput()
-        
-        senderMessageView.setupButton()
-        receiverMessageView.setupButton()
     }
-    
-    
 }
 
