@@ -9,78 +9,64 @@ import UIKit
 
 class ChatViewController: UIViewController {
     
-
     let modeButton = UIButton(type: .custom)
-    
-    
-    
     
     let lightModeButton = UIButton(type: .custom)
     let darkModeButton = UIButton(type: .custom)
     
     let senderMessageView = MessageView()
     let receiverMessageView = MessageView()
+    let separator = UIView()
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
+        separator.backgroundColor = .yellow
         
-        
-        
-        
-        
-        
-        
-        view.backgroundColor = .yellow
+        //view.backgroundColor = .yellow
         
         let stackView = UIStackView(arrangedSubviews: [senderMessageView, receiverMessageView])
         stackView.axis = .vertical
-        stackView.spacing = 16.0
+        stackView.spacing = 16.0 // gasasworebeli
         stackView.distribution = .fillEqually
         
         view.addSubview(stackView)
+        view.addSubview(separator)
         
+        
+        separator.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            
+//            separator.heightAnchor.constraint(equalToConstant: 100),
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            separator.topAnchor.constraint(equalTo: senderMessageView.bottomAnchor),
+            separator.bottomAnchor.constraint(equalTo: receiverMessageView.topAnchor),
+            separator.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            separator.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            separator.heightAnchor.constraint(equalToConstant: 6)
             
         ])
         
         setupStackView()
         setupNavigationItems()
-        
-        //senderMessageView.setupSwitchView()
+       
     }
     
     func setupNavigationItems() {
-        //        lightModeButton.setImage(UIImage(named: "lightmode"), for: .normal)
-        //        lightModeButton.addTarget(self, action: #selector(lightModeButtonTapped), for: .touchUpInside)
-        //        let lightModeBarButtonItem = UIBarButtonItem(customView: lightModeButton)
-        //
-        //        darkModeButton.setImage(UIImage(named: "darkmode"), for: .normal)
-        //        darkModeButton.addTarget(self, action: #selector(darkModeButtonTapped), for: .touchUpInside)
-        //        let darkModeBarButtonItem = UIBarButtonItem(customView: darkModeButton)
-        //
-        //        navigationItem.rightBarButtonItems = [darkModeBarButtonItem, lightModeBarButtonItem]
         
-        //modeButton.setTitle("darkmode", for: .normal)
         modeButton.setImage(UIImage(named: "darkmode"), for: .normal)
         modeButton.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: modeButton)
         
     }
-    
-    //    @objc func lightModeButtonTapped() {
-    //        UIScreen.main.brightness = 1.0
-    //        }
-    //
-    //        @objc func darkModeButtonTapped() {
-    //            UIScreen.main.brightness = 0.0
-    //        }
-    
     
     var isDarkMode = false
     
@@ -92,30 +78,31 @@ class ChatViewController: UIViewController {
             overrideUserInterfaceStyle = .dark
             view.backgroundColor = .black
             modeButton.setImage(UIImage(named: "darkmode"), for: .normal)
-            
+            view.backgroundColor = .black
+            senderMessageView.setDark()
+            receiverMessageView.setDark()
         } else {
-            
             overrideUserInterfaceStyle = .light
             view.backgroundColor = .white
-            modeButton.setImage(UIImage(named: "nightmode"), for: .normal)
+            modeButton.setImage(UIImage(named: "lightmode"), for: .normal)
+            senderMessageView.setLight()
+            receiverMessageView.setLight()
             
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-       
-        
-        override func viewDidAppear(_ animated: Bool) {
-            super.viewDidAppear(animated)
-            
-            senderMessageView.applySnapshot()
-            receiverMessageView.applySnapshot()
-        }
-        
-        func setupStackView() {
-            senderMessageView.setupView()
-            receiverMessageView.setupView()
-            
-        }
+        senderMessageView.applySnapshot()
+        receiverMessageView.applySnapshot()
     }
+    
+    func setupStackView() {
+        senderMessageView.setupView()
+        receiverMessageView.setupView()
+        
+    }
+}
 
 

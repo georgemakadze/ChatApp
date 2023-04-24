@@ -9,16 +9,13 @@ import Foundation
 import UIKit
 
 class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
-    private let textView = UITextField()
+    private let textView = UITextView() // texfield
+    
     private let button = UIButton(type: .custom)
-    //private let modeButton = UIButton(type: .custom)
     private var collectionView: UICollectionView!
     private var dataSource: UICollectionViewDiffableDataSource<Section, Message>!
+    let conteinerView = UIView()
     
-    //    let switchButton = UIButton(type: .custom)
-    //    let onButton = UIButton(type: .custom)
-    
-    //var isOn = false
     
     struct Message: Hashable {
         let text: String
@@ -44,10 +41,8 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
     func setupView() {
         backgroundColor = .white
         setupCollectionView()
-        setupButton()
-        //setupModeButton()
-        //setupSwitchView()
-        textInput()
+        setupConeiner()
+        
     }
     
     func setupCollectionView() {
@@ -99,99 +94,61 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    func setupButton() {
+    func setupConeiner() {
+        conteinerView.backgroundColor = UIColor(hex: "F1F1F1")
+        conteinerView.layer.borderColor = UIColor(hex: "9F60FF")?.cgColor
+        conteinerView.layer.borderWidth = 1.0
+        conteinerView.layer.cornerRadius = 28
         
         button.setImage(UIImage(named: "send"), for: .normal)
         
-        let buttonSize = CGSize(width: 40, height: 40)
-        button.frame = CGRect(origin: CGPoint.zero, size: buttonSize)
-        
-        let buttonView = UIView(frame: button.frame)
-        buttonView.addSubview(button)
-        buttonView.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: buttonSize.width + 16, height: buttonSize.height))
-        
-        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 40))
-        
-        textView.rightView = buttonView
-        textView.rightViewMode = .always
-        textView.leftView = leftView
-        textView.leftViewMode = .always
-    }
-    
-    //    func setupModeButton() {
-    //
-    //        modeButton.setImage(UIImage(named: "mode"), for: .normal)
-    //
-    //        let buttonSize = CGSize(width: 60, height: 60)
-    //        modeButton.frame = CGRect(origin: CGPoint.zero, size: buttonSize)
-    //
-    //        let buttonView = UIView(frame: modeButton.frame)
-    //        buttonView.addSubview(modeButton)
-    //        buttonView.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: buttonSize.width + 16, height: buttonSize.height))
-    
-    //let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 60))
-    
-    //        textView.rightView = buttonView
-    //        textView.rightViewMode = .always
-    //        textView.leftView = leftView
-    //        textView.leftViewMode = .always
-    //   }
-    
-    
-    //     func setupSwitchView() {
-    //           switchButton.setImage(UIImage(named: "nightmode"), for: .normal)
-    //           switchButton.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
-    //           addSubview(switchButton)
-    //           switchButton.translatesAutoresizingMaskIntoConstraints = false
-    //           NSLayoutConstraint.activate([
-    //            switchButton.topAnchor.constraint(equalTo: self.topAnchor),
-    //            switchButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-    //            switchButton.widthAnchor.constraint(equalToConstant: 60),
-    //            switchButton.heightAnchor.constraint(equalToConstant: 60)
-    //           ])
-    //
-    //         onButton.setImage(UIImage(named: "darkmode"), for: .normal)
-    //         onButton.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
-    //         addSubview(onButton)
-    //         onButton.translatesAutoresizingMaskIntoConstraints = false
-    //         NSLayoutConstraint.activate([
-    //          onButton.topAnchor.constraint(equalTo: self.topAnchor),
-    //          onButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-    //          onButton.widthAnchor.constraint(equalToConstant: 60),
-    //          onButton.heightAnchor.constraint(equalToConstant: 60)
-    //         ])
-    //
-    
-    
-    
-    
-    //       }
-    //    @objc func switchMode() {
-    //            isOn.toggle()
-    //            // Switch to dark mode or light mode
-    //        }
-    //
-    
-    
-    
-    func textInput() {
-        
-        textView.font = UIFont.systemFont(ofSize: 20)
-        textView.textColor = .black
+        textView.backgroundColor = .clear
+        //textView.layer.cornerRadius = 25
+        textView.font = UIFont.systemFont(ofSize: 16)
+
         textView.textAlignment = .left
-        textView.backgroundColor = .white
-        textView.layer.borderWidth = 1.0
-        textView.layer.borderColor = UIColor.systemPink.cgColor
-        textView.layer.cornerRadius = 25
-        self.addSubview(textView)
+        textView.textColor = UIColor(hex: "191919")
+        textView.text = "დაწერეთ შეტყობინება"
         
+        
+        addSubview(conteinerView)
+        conteinerView.addSubview(textView)
+        conteinerView.addSubview(button)
+        
+        conteinerView.translatesAutoresizingMaskIntoConstraints = false
         textView.translatesAutoresizingMaskIntoConstraints = false
+        button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            textView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-            textView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
-            textView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
-            textView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.15),
-            textView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 16)
+            conteinerView.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
+            conteinerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            conteinerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            conteinerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
+            
+            textView.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor, constant: 16),
+            //textView.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: -15),
+            textView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor, constant: -8),
+            textView.heightAnchor.constraint(equalToConstant: 44),
+            textView.topAnchor.constraint(equalTo: conteinerView.topAnchor, constant: 8),
+            
+            button.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor),
+            button.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: -8),
+            button.topAnchor.constraint(equalTo: conteinerView.topAnchor),
+            button.leadingAnchor.constraint(equalTo: textView.trailingAnchor, constant: 10)
+            
+            
         ])
     }
+    
+    func setDark() {
+        backgroundColor = UIColor(hex: "160039")
+        conteinerView.backgroundColor = UIColor(hex: "160039")
+        textView.textColor = .white
+    }
+    
+    func setLight() {
+        backgroundColor = UIColor(hex: "FFFFFF")
+        conteinerView.backgroundColor = UIColor(hex: "FFFFFF")
+        textView.textColor = .black
+    }
+    
 }

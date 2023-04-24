@@ -14,6 +14,7 @@
 		0E52E3B329EEF2CA00845294 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E52E3B129EEF2CA00845294 /* LaunchScreen.storyboard */; };
 		0E52E3C229F0091700845294 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52E3C129F0091700845294 /* MessageView.swift */; };
 		0E52E3C429F2890800845294 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52E3C329F2890800845294 /* MessageCell.swift */; };
+		0E52E3C729F6D44C00845294 /* UIColor+Extantions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52E3C629F6D44C00845294 /* UIColor+Extantions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		0E52E3B429EEF2CA00845294 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E52E3C129F0091700845294 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		0E52E3C329F2890800845294 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		0E52E3C629F6D44C00845294 /* UIColor+Extantions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extantions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 		0E52E3A529EEF2C800845294 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				0E52E3C529F6D41500845294 /* Extantions */,
 				0E52E3BA29EFE09100845294 /* ChatView */,
 				0E52E3A629EEF2C800845294 /* AppDelegate.swift */,
 				0E52E3A829EEF2C800845294 /* SceneDelegate.swift */,
@@ -76,6 +79,14 @@
 				0E52E3C329F2890800845294 /* MessageCell.swift */,
 			);
 			path = ChatView;
+			sourceTree = "<group>";
+		};
+		0E52E3C529F6D41500845294 /* Extantions */ = {
+			isa = PBXGroup;
+			children = (
+				0E52E3C629F6D44C00845294 /* UIColor+Extantions.swift */,
+			);
+			path = Extantions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E52E3C729F6D44C00845294 /* UIColor+Extantions.swift in Sources */,
 				0E52E3C229F0091700845294 /* MessageView.swift in Sources */,
 				0E52E3C429F2890800845294 /* MessageCell.swift in Sources */,
 				0E52E3AB29EEF2C800845294 /* ChatViewController.swift in Sources */,
