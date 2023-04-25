@@ -73,9 +73,8 @@ class ChatViewController: UIViewController {
         if isDarkMode {
             
             overrideUserInterfaceStyle = .dark
-            view.backgroundColor = .black
+            view.backgroundColor = UIColor(hex: "160039")
             modeButton.setImage(UIImage(named: "darkmode"), for: .normal)
-            view.backgroundColor = .black
             senderMessageView.setDark()
             receiverMessageView.setDark()
         } else {
