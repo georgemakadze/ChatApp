@@ -16,21 +16,21 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
     private var dataSource: UICollectionViewDiffableDataSource<Section, Message>!
     let conteinerView = UIView()
     
-    
     struct Message: Hashable {
         let text: String
+        let date: String
         
-        init(text: String) {
+        init(text: String, date: String) {
             self.text = text
-            
+            self.date = date
         }
     }
     
     let dataItems = [
-        Message(text: "გამარჯობა"),
-        Message(text: "გამარჯობა!"),
-        Message(text: "როგორ ხარ?"),
-        Message(text: "კარგად!"),
+        Message(text: "გამარჯობა, ზეზვა როგორ ხარ?", date: "მარ 14,16:00"),
+        Message(text: "გამარჯობა, მზია როგორ ხარ?", date: "მარ 14,16:05"),
+        Message(text: "კარგად!", date: "მარ 14,16:10"),
+        Message(text: "ნუ მატყუებ!", date: "მარ 14,16:11")
         
     ]
     
@@ -42,7 +42,6 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
         backgroundColor = .white
         setupCollectionView()
         setupConeiner()
-        
     }
     
     func setupCollectionView() {
@@ -64,6 +63,7 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
         
         let cellRegistration = UICollectionView.CellRegistration<MessageCell, Message> { (cell, indexPath, item) in
             cell.label.text = item.text
+            cell.textDate.text = item.date
             
             //            let isMessageFromCurrentUser = item.text == "current_user_id"
             //
@@ -96,7 +96,7 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
     
     func setupConeiner() {
         conteinerView.backgroundColor = UIColor(hex: "F1F1F1")
-        conteinerView.layer.borderColor = UIColor(hex: "9F60FF")?.cgColor
+        conteinerView.layer.borderColor = UIColor(hex: "9F60FF").cgColor
         conteinerView.layer.borderWidth = 1.0
         conteinerView.layer.cornerRadius = 28
         
@@ -105,11 +105,10 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
         textView.backgroundColor = .clear
         //textView.layer.cornerRadius = 25
         textView.font = UIFont.systemFont(ofSize: 16)
-
-        textView.textAlignment = .left
-        textView.textColor = UIColor(hex: "191919")
-        textView.text = "დაწერეთ შეტყობინება"
         
+        textView.textAlignment = .left
+        textView.textColor = UIColor(hex: "C7C7C7")
+        textView.text = "დაწერეთ შეტყობინება..."
         
         addSubview(conteinerView)
         conteinerView.addSubview(textView)
@@ -135,7 +134,6 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
             button.topAnchor.constraint(equalTo: conteinerView.topAnchor),
             button.leadingAnchor.constraint(equalTo: textView.trailingAnchor, constant: 10)
             
-            
         ])
     }
     
@@ -149,6 +147,7 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
         backgroundColor = UIColor(hex: "FFFFFF")
         conteinerView.backgroundColor = UIColor(hex: "FFFFFF")
         textView.textColor = .black
+        
     }
     
 }

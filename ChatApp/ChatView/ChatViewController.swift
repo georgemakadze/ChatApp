@@ -19,29 +19,26 @@ class ChatViewController: UIViewController {
     let separator = UIView()
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        
         separator.backgroundColor = .yellow
         
         //view.backgroundColor = .yellow
-        
         let stackView = UIStackView(arrangedSubviews: [senderMessageView, receiverMessageView])
         stackView.axis = .vertical
-        stackView.spacing = 16.0 // gasasworebeli
+        stackView.spacing = 0 // gasasworebeli
         stackView.distribution = .fillEqually
         
         view.addSubview(stackView)
         view.addSubview(separator)
         
-        
         separator.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             
-//            separator.heightAnchor.constraint(equalToConstant: 100),
+            //            separator.heightAnchor.constraint(equalToConstant: 100),
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -57,7 +54,7 @@ class ChatViewController: UIViewController {
         
         setupStackView()
         setupNavigationItems()
-       
+        
     }
     
     func setupNavigationItems() {
