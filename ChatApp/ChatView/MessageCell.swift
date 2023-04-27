@@ -24,11 +24,12 @@ class MessageCell: UICollectionViewCell {
     }
     
     func setup() {
+        
         conteinerView.backgroundColor = UIColor(hex: "F1F1F1")
-        conteinerView.layer.cornerRadius = 25
+        conteinerView.layer.cornerRadius = CGFloat(Constants.conteinerViewRadius)
         
         textDate.textColor = UIColor(hex: "C7C7C7")
-        textDate.font = UIFont.systemFont(ofSize: 12)
+        textDate.font = UIFont.systemFont(ofSize: CGFloat(Constants.textdateFontSize))
         
         //        elipse.backgroundColor = .gray
         //        elipse.layer.cornerRadius = 6
@@ -37,37 +38,64 @@ class MessageCell: UICollectionViewCell {
         contentView.backgroundColor = .clear
         
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.numberOfLines = 0 // set number of lines to 0
+        label.font = UIFont.systemFont(ofSize: CGFloat(Constants.labelFontSize))
+        label.numberOfLines = .zero // set number of lines to 0
         label.lineBreakMode = .byWordWrapping // set line break mode to .byWordWrapping
         
-        //        elipse.translatesAutoresizingMaskIntoConstraints = false
-        conteinerView.translatesAutoresizingMaskIntoConstraints = false
-        label.translatesAutoresizingMaskIntoConstraints = false
-        textDate.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(conteinerView)
         contentView.addSubview(textDate)
         conteinerView.addSubview(label)
         //        conteinerView.addSubview(elipse)
         
-        
+        setupConteinerViewConstant()
+        setupLabelConstant()
+        setupTextDateConstant()
+    }
+    
+    func setupConteinerViewConstant() {
+        conteinerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             conteinerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             conteinerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            conteinerView.trailingAnchor.constraint(equalTo: label.trailingAnchor, constant: 16),
-            //conteinerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            
-            label.topAnchor.constraint(equalTo: conteinerView.topAnchor, constant: 16),
-            label.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: -16),
-            label.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor, constant: -16),
-            
-            textDate.topAnchor.constraint(equalTo: conteinerView.bottomAnchor, constant: 4),
-            textDate.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 36),
-            //            text.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -100),
-            textDate.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            conteinerView.trailingAnchor.constraint(equalTo: label.trailingAnchor, constant: CGFloat(Constants.conteinerViewtrailingAnchor))
         ])
-        
+    }
+    
+    func setupLabelConstant() {
+        label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: conteinerView.topAnchor, constant: CGFloat(Constants.labelTopAnchor)),
+            label.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor, constant: CGFloat(Constants.labelLeadingAnchor)),
+            label.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: CGFloat(Constants.labelTrailingAnchor)),
+            label.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor, constant: CGFloat(Constants.labelBottomAnchor))
+        ])
+    }
+    
+    func setupTextDateConstant() {
+        textDate.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textDate.topAnchor.constraint(equalTo: conteinerView.bottomAnchor, constant: CGFloat(Constants.textDateTopAnchor)),
+            textDate.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: CGFloat(Constants.textDateLeadingAnchor)),
+            //            text.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -100),
+            textDate.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: CGFloat(Constants.textDateBottomAnchor))
+        ])
     }
 }
+
+extension MessageCell {
+    enum Constants {
+        static let conteinerViewtrailingAnchor = 16
+        static let textdateFontSize = 12
+        static let conteinerViewRadius = 25
+        static let labelFontSize = 16
+        static let labelTopAnchor = 16
+        static let labelLeadingAnchor = 16
+        static let labelTrailingAnchor = -16
+        static let labelBottomAnchor = -16
+        static let textDateTopAnchor = 4
+        static let textDateLeadingAnchor = 36
+        static let textDateBottomAnchor = -16
+    }
+}
+
 
