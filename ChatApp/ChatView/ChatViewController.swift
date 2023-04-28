@@ -24,15 +24,6 @@ class ChatViewController: UIViewController  {
         receiverMessageView.applySnapshot()
     }
     
-    @objc func switchMode() {
-        isDarkMode = !isDarkMode
-        if isDarkMode {
-            setupDark()
-        } else {
-            setupLight()
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupStackView()
@@ -96,6 +87,15 @@ class ChatViewController: UIViewController  {
         modeButton.setImage(UIImage(named: "lightmode"), for: .normal)
         senderMessageView.setLight()
         receiverMessageView.setLight()
+    }
+    
+    @objc private func switchMode() {
+        isDarkMode = !isDarkMode
+        if isDarkMode {
+            setupDark()
+        } else {
+            setupLight()
+        }
     }
 }
 
