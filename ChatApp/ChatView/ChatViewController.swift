@@ -15,6 +15,23 @@ class ChatViewController: UIViewController  {
     private let receiverMessageView = MessageView()
     private let separator = UIView()
     private var stackView: UIStackView!
+    var isDarkMode = false
+    
+    @objc func switchMode() {
+        isDarkMode = !isDarkMode
+        if isDarkMode {
+            setupDark()
+        } else {
+            setupLight()
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        senderMessageView.applySnapshot()
+        receiverMessageView.applySnapshot()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +41,7 @@ class ChatViewController: UIViewController  {
         setupNavigationItems()
     }
     
-    func setupStackView() {
+    private func setupStackView() {
         stackView = UIStackView(arrangedSubviews: [senderMessageView, receiverMessageView])
         stackView.axis = .vertical
         stackView.spacing = .zero
@@ -40,7 +57,7 @@ class ChatViewController: UIViewController  {
         ])
     }
     
-    func setupSeparator() {
+    private func setupSeparator() {
         separator.backgroundColor = .yellow
         view.addSubview(separator)
         
@@ -54,41 +71,31 @@ class ChatViewController: UIViewController  {
         ])
     }
     
-    func setupNavigationItems() {
+    private func setupNavigationItems() {
         modeButton.setImage(UIImage(named: "darkmode"), for: .normal)
         modeButton.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: modeButton)
     }
     
-    var isDarkMode = false
-    
-    @objc func switchMode() {
-        isDarkMode = !isDarkMode
-        if isDarkMode {
-            overrideUserInterfaceStyle = .dark
-            view.backgroundColor = Constants.viewBackgroundColor
-            modeButton.setImage(UIImage(named: "darkmode"), for: .normal)
-            senderMessageView.setDark()
-            receiverMessageView.setDark()
-        } else {
-            overrideUserInterfaceStyle = .light
-            view.backgroundColor = .white
-            modeButton.setImage(UIImage(named: "lightmode"), for: .normal)
-            senderMessageView.setLight()
-            receiverMessageView.setLight()
-        }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        senderMessageView.applySnapshot()
-        receiverMessageView.applySnapshot()
-    }
-    
-    func setupMessageViews() {
+    private func setupMessageViews() {
         senderMessageView.setupView()
         receiverMessageView.setupView()
+    }
+    
+    private func setupDark() {
+        overrideUserInterfaceStyle = .dark
+        view.backgroundColor = Constants.viewBackgroundColor
+        modeButton.setImage(UIImage(named: "darkmode"), for: .normal)
+        senderMessageView.setDark()
+        receiverMessageView.setDark()
+    }
+    
+    private func setupLight() {
+        overrideUserInterfaceStyle = .light
+        view.backgroundColor = .white
+        modeButton.setImage(UIImage(named: "lightmode"), for: .normal)
+        senderMessageView.setLight()
+        receiverMessageView.setLight()
     }
 }
 

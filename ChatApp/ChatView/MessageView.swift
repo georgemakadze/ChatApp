@@ -42,7 +42,7 @@ class MessageView: UIView {
         setUpContainer()
     }
     
-    func setupCollectionView() {
+    private func setupCollectionView() {
         var layoutConfig = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         layoutConfig.showsSeparators = false
         layoutConfig.backgroundColor = .clear
@@ -86,7 +86,7 @@ class MessageView: UIView {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    func setUpContainer() {
+    private func setUpContainer() {
         makeContainer()
         makeButton()
         makeTextView()
@@ -96,7 +96,7 @@ class MessageView: UIView {
         setupButtonConstant()
     }
     
-    func makeContainer() {
+    private func makeContainer() {
         containerView.backgroundColor = Constants.containerViewBackgroundColor
         containerView.layer.borderColor = Constants.conteinerViewLayerBorderColor
         containerView.layer.borderWidth = CGFloat(Constants.containerViewLayerBorderWidth)
@@ -104,19 +104,20 @@ class MessageView: UIView {
         addSubview(containerView)
     }
     
-    func makeButton() {
+    private func makeButton() {
         button.setImage(UIImage(named: "send"), for: .normal)
         containerView.addSubview(button)
     }
     
-    func makeTextView() {
+    private func makeTextView() {
         textView.textAlignment = .left
         textView.textColor = Constants.textViewTextColor
+        textView.font = UIFont.systemFont(ofSize:CGFloat(Constants.textViewFont))
         textView.text = "დაწერეთ შეტყობინება..."
         containerView.addSubview(textView)
     }
     
-    func setupCollectionViewConstant() {
+    private func setupCollectionViewConstant() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: CGFloat(Constants.collectionViewTopAnchor)),
@@ -125,7 +126,7 @@ class MessageView: UIView {
         ])
     }
     
-    func setupConteinerViewConstant() {
+    private func setupConteinerViewConstant() {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
@@ -135,7 +136,7 @@ class MessageView: UIView {
         ])
     }
     
-    func setupTextDateConstant() {
+    private func setupTextDateConstant() {
         textView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             textView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: CGFloat(Constants.textViewLeadingAnchor)),
@@ -145,7 +146,7 @@ class MessageView: UIView {
         ])
     }
     
-    func setupButtonConstant() {
+    private func setupButtonConstant() {
         button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             button.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),

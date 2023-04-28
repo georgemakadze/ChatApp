@@ -23,35 +23,40 @@ class MessageCell: UICollectionViewCell {
         fatalError("nope!")
     }
     
-    func setup() {
-        containerView.backgroundColor = Constants.containerViewBackgroundColor
-        containerView.layer.cornerRadius = CGFloat(Constants.containerViewRadius)
-        
-        textDate.textColor = Constants.textDateTextColor
-        textDate.font = UIFont.systemFont(ofSize: CGFloat(Constants.textDateFontSize))
-        
-        //        elipse.backgroundColor = .gray
-        //        elipse.layer.cornerRadius = 6
-        
-        label.backgroundColor = .clear
+    private func setup() {
         contentView.backgroundColor = .clear
         
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: CGFloat(Constants.labelFontSize))
-        label.numberOfLines = .zero
-        label.lineBreakMode = .byWordWrapping
-        
-        contentView.addSubview(containerView)
-        contentView.addSubview(textDate)
-        containerView.addSubview(label)
-        //        conteinerView.addSubview(elipse)
+        makeContainer()
+        makeLabel()
+        makeTextDate()
         
         setupContainerViewConstant()
         setupLabelConstant()
         setupTextDateConstant()
     }
     
-    func setupContainerViewConstant() {
+    private func makeContainer() {
+        containerView.backgroundColor = Constants.containerViewBackgroundColor
+        containerView.layer.cornerRadius = CGFloat(Constants.containerViewRadius)
+        contentView.addSubview(containerView)
+    }
+    
+    private func makeTextDate() {
+        textDate.textColor = Constants.textDateTextColor
+        textDate.font = UIFont.systemFont(ofSize: CGFloat(Constants.textDateFontSize))
+        contentView.addSubview(textDate)
+    }
+    
+    private func makeLabel() {
+        label.backgroundColor = .clear
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: CGFloat(Constants.labelFontSize))
+        label.numberOfLines = .zero
+        label.lineBreakMode = .byWordWrapping
+        containerView.addSubview(label)
+    }
+    
+    private func setupContainerViewConstant() {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -60,7 +65,7 @@ class MessageCell: UICollectionViewCell {
         ])
     }
     
-    func setupLabelConstant() {
+    private func setupLabelConstant() {
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: containerView.topAnchor, constant: CGFloat(Constants.labelTopAnchor)),
@@ -70,7 +75,7 @@ class MessageCell: UICollectionViewCell {
         ])
     }
     
-    func setupTextDateConstant() {
+    private func setupTextDateConstant() {
         textDate.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             textDate.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: CGFloat(Constants.textDateTopAnchor)),
