@@ -27,7 +27,7 @@ class ChatViewController: UIViewController  {
     func setupStackView() {
         stackView = UIStackView(arrangedSubviews: [senderMessageView, receiverMessageView])
         stackView.axis = .vertical
-        stackView.spacing = 0 // gasasworebeli
+        stackView.spacing = .zero
         stackView.distribution = .fillEqually
         view.addSubview(stackView)
         
@@ -50,7 +50,7 @@ class ChatViewController: UIViewController  {
             separator.bottomAnchor.constraint(equalTo: receiverMessageView.topAnchor),
             separator.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             separator.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 6)
+            separator.heightAnchor.constraint(equalToConstant: CGFloat(Constants.separatorHeightAnchor))
         ])
     }
     
@@ -66,7 +66,7 @@ class ChatViewController: UIViewController  {
         isDarkMode = !isDarkMode
         if isDarkMode {
             overrideUserInterfaceStyle = .dark
-            view.backgroundColor = UIColor(hex: "160039")
+            view.backgroundColor = Constants.viewBackgroundColor
             modeButton.setImage(UIImage(named: "darkmode"), for: .normal)
             senderMessageView.setDark()
             receiverMessageView.setDark()
@@ -89,6 +89,13 @@ class ChatViewController: UIViewController  {
     func setupMessageViews() {
         senderMessageView.setupView()
         receiverMessageView.setupView()
+    }
+}
+
+extension ChatViewController {
+    enum Constants {
+        static let separatorHeightAnchor = 6
+        static let viewBackgroundColor = UIColor(hex: "160039")
     }
 }
 

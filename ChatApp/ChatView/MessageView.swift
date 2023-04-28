@@ -8,12 +8,12 @@
 import Foundation
 import UIKit
 
-class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
-    private let textView = UITextView() // texfield
+class MessageView: UIView {
+    private let textView = UITextView()
     private let button = UIButton(type: .custom)
     private var collectionView: UICollectionView!
     private var dataSource: UICollectionViewDiffableDataSource<Section, Message>!
-    private let conteinerView = UIView()
+    private let containerView = UIView()
     
     struct Message: Hashable {
         let text: String
@@ -39,7 +39,7 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
     func setupView() {
         backgroundColor = .white
         setupCollectionView()
-        setupConeiner()
+        setUpContainer()
     }
     
     func setupCollectionView() {
@@ -86,28 +86,34 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    func setupConeiner() {
-        conteinerView.backgroundColor = UIColor(hex: "F1F1F1")
-        conteinerView.layer.borderColor = UIColor(hex: "9F60FF").cgColor
-        conteinerView.layer.borderWidth = CGFloat(Constants.conteinerViewLayerBorderWidth)
-        conteinerView.layer.cornerRadius = CGFloat(Constants.conteinerViewLayerCornerRadius)
-        
-        button.setImage(UIImage(named: "send"), for: .normal)
-        
-        textView.backgroundColor = .clear
-        textView.font = UIFont.systemFont(ofSize: CGFloat(Constants.textViewFont))
-        
-        textView.textAlignment = .left
-        textView.textColor = UIColor(hex: "C7C7C7")
-        textView.text = "დაწერეთ შეტყობინება..."
-        
-        addSubview(conteinerView)
-        conteinerView.addSubview(textView)
-        conteinerView.addSubview(button)
+    func setUpContainer() {
+        makeContainer()
+        makeButton()
+        makeTextView()
         
         setupConteinerViewConstant()
         setupTextDateConstant()
         setupButtonConstant()
+    }
+    
+    func makeContainer() {
+        containerView.backgroundColor = Constants.containerViewBackgroundColor
+        containerView.layer.borderColor = Constants.conteinerViewLayerBorderColor
+        containerView.layer.borderWidth = CGFloat(Constants.containerViewLayerBorderWidth)
+        containerView.layer.cornerRadius = CGFloat(Constants.containerViewLayerCornerRadius)
+        addSubview(containerView)
+    }
+    
+    func makeButton() {
+        button.setImage(UIImage(named: "send"), for: .normal)
+        containerView.addSubview(button)
+    }
+    
+    func makeTextView() {
+        textView.textAlignment = .left
+        textView.textColor = Constants.textViewTextColor
+        textView.text = "დაწერეთ შეტყობინება..."
+        containerView.addSubview(textView)
     }
     
     func setupCollectionViewConstant() {
@@ -116,50 +122,48 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
             collectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: CGFloat(Constants.collectionViewTopAnchor)),
             collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            //collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
         ])
     }
     
     func setupConteinerViewConstant() {
-        conteinerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            conteinerView.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
-            conteinerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: CGFloat(Constants.conteinerViewLeadingAnchor)),
-            conteinerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: CGFloat(Constants.conteinerViewLrailingAnchor)),
-            conteinerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: CGFloat(Constants.conteinerViewBottomAnchor))
+            containerView.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: CGFloat(Constants.containerViewLeadingAnchor)),
+            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: CGFloat(Constants.containerViewTrailingAnchor)),
+            containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: CGFloat(Constants.containerViewBottomAnchor))
         ])
     }
     
     func setupTextDateConstant() {
         textView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            textView.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor, constant: CGFloat(Constants.textViewLeadingAnchor)),
-            //textView.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: -15),
-            textView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor, constant: CGFloat(Constants.textViewBottomAnchor)),
+            textView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: CGFloat(Constants.textViewLeadingAnchor)),
+            textView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: CGFloat(Constants.textViewBottomAnchor)),
             textView.heightAnchor.constraint(equalToConstant: CGFloat(Constants.textViewHeightAnchor)),
-            textView.topAnchor.constraint(equalTo: conteinerView.topAnchor, constant: CGFloat(Constants.textViewTopAnchor))
+            textView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: CGFloat(Constants.textViewTopAnchor))
         ])
     }
     
     func setupButtonConstant() {
         button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            button.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor),
-            button.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: CGFloat(Constants.buttonTrailingAnchor)),
-            button.topAnchor.constraint(equalTo: conteinerView.topAnchor),
+            button.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            button.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: CGFloat(Constants.buttonTrailingAnchor)),
+            button.topAnchor.constraint(equalTo: containerView.topAnchor),
             button.leadingAnchor.constraint(equalTo: textView.trailingAnchor, constant: CGFloat(Constants.buttonLeadingAnchor))
         ])
     }
     
     func setDark() {
-        backgroundColor = UIColor(hex: "160039")
-        conteinerView.backgroundColor = UIColor(hex: "160039")
+        backgroundColor = Constants.backgroundColor
+        containerView.backgroundColor = Constants.darkContainerViewBackgroundColor
         textView.textColor = .white
     }
     
     func setLight() {
-        backgroundColor = UIColor(hex: "FFFFFF")
-        conteinerView.backgroundColor = UIColor(hex: "FFFFFF")
+        backgroundColor = .white
+        containerView.backgroundColor = .white
         textView.textColor = .black
     }
 }
@@ -167,17 +171,22 @@ class MessageView: UIView, UITextViewDelegate, UICollectionViewDelegate {
 extension MessageView {
     enum Constants {
         static let collectionViewTopAnchor = 16
-        static let conteinerViewLeadingAnchor = 16
-        static let conteinerViewLrailingAnchor = -16
-        static let conteinerViewBottomAnchor = -16
+        static let containerViewLeadingAnchor = 16
+        static let containerViewTrailingAnchor = -16
+        static let containerViewBottomAnchor = -16
         static let textViewLeadingAnchor = 16
         static let textViewBottomAnchor = -8
         static let textViewHeightAnchor = 44
         static let textViewTopAnchor = 8
         static let buttonTrailingAnchor = -8
         static let buttonLeadingAnchor = 10
-        static let conteinerViewLayerBorderWidth = 1
-        static let conteinerViewLayerCornerRadius = 28
+        static let containerViewLayerBorderWidth = 1
+        static let containerViewLayerCornerRadius = 28
         static let textViewFont = 16
+        static let containerViewBackgroundColor = UIColor(hex: "F1F1F1")
+        static let conteinerViewLayerBorderColor = UIColor(hex: "9F60FF").cgColor
+        static let textViewTextColor = UIColor(hex: "C7C7C7")
+        static let backgroundColor = UIColor(hex: "160039")
+        static let darkContainerViewBackgroundColor = UIColor(hex: "160039")
     }
 }
