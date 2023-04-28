@@ -17,6 +17,13 @@ class ChatViewController: UIViewController  {
     private var stackView: UIStackView!
     var isDarkMode = false
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        senderMessageView.applySnapshot()
+        receiverMessageView.applySnapshot()
+    }
+    
     @objc func switchMode() {
         isDarkMode = !isDarkMode
         if isDarkMode {
@@ -24,13 +31,6 @@ class ChatViewController: UIViewController  {
         } else {
             setupLight()
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        senderMessageView.applySnapshot()
-        receiverMessageView.applySnapshot()
     }
     
     override func viewDidLoad() {
