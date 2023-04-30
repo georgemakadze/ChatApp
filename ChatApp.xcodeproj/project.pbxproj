@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E433D4A29FCF0AD00512F87 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E433D4929FCF0AD00512F87 /* ChatViewModel.swift */; };
+		0E433D4C29FCF74300512F87 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E433D4B29FCF74300512F87 /* Messages.swift */; };
 		0E52E3A729EEF2C800845294 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52E3A629EEF2C800845294 /* AppDelegate.swift */; };
 		0E52E3A929EEF2C800845294 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52E3A829EEF2C800845294 /* SceneDelegate.swift */; };
 		0E52E3AB29EEF2C800845294 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52E3AA29EEF2C800845294 /* ChatViewController.swift */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E433D4929FCF0AD00512F87 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		0E433D4B29FCF74300512F87 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		0E52E3A329EEF2C800845294 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E52E3A629EEF2C800845294 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0E52E3A829EEF2C800845294 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +81,8 @@
 				0E52E3AA29EEF2C800845294 /* ChatViewController.swift */,
 				0E52E3C129F0091700845294 /* MessageView.swift */,
 				0E52E3C329F2890800845294 /* MessageCell.swift */,
+				0E433D4929FCF0AD00512F87 /* ChatViewModel.swift */,
+				0E433D4B29FCF74300512F87 /* Messages.swift */,
 			);
 			path = ChatView;
 			sourceTree = "<group>";
@@ -160,6 +166,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E52E3C729F6D44C00845294 /* UIColor+Extantions.swift in Sources */,
+				0E433D4C29FCF74300512F87 /* Messages.swift in Sources */,
+				0E433D4A29FCF0AD00512F87 /* ChatViewModel.swift in Sources */,
 				0E52E3C229F0091700845294 /* MessageView.swift in Sources */,
 				0E52E3C429F2890800845294 /* MessageCell.swift in Sources */,
 				0E52E3AB29EEF2C800845294 /* ChatViewController.swift in Sources */,

@@ -7,12 +7,13 @@
 
 import UIKit
 
-class ChatViewController: UIViewController  {
+class ChatViewController: UIViewController {
+    private let chatViewModel = ChatViewModel()
     private let modeButton = UIButton(type: .custom)
     private let lightModeButton = UIButton(type: .custom)
     private let darkModeButton = UIButton(type: .custom)
-    private let senderMessageView = MessageView()
-    private let receiverMessageView = MessageView()
+    private let myMessageView = MessageView()
+    private let otherMessageView = MessageView()
     private let separator = UIView()
     private var stackView: UIStackView!
     var isDarkMode = false
@@ -20,8 +21,8 @@ class ChatViewController: UIViewController  {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        senderMessageView.applySnapshot()
-        receiverMessageView.applySnapshot()
+        myMessageView.setup(messages: chatViewModel.senderMessages)
+        otherMessageView.setup(messages: chatViewModel.receiveMessages)
     }
     
     override func viewDidLoad() {
@@ -33,7 +34,7 @@ class ChatViewController: UIViewController  {
     }
     
     private func setupStackView() {
-        stackView = UIStackView(arrangedSubviews: [senderMessageView, receiverMessageView])
+        stackView = UIStackView(arrangedSubviews: [myMessageView, otherMessageView])
         stackView.axis = .vertical
         stackView.spacing = .zero
         stackView.distribution = .fillEqually
@@ -54,8 +55,8 @@ class ChatViewController: UIViewController  {
         
         separator.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            separator.topAnchor.constraint(equalTo: senderMessageView.bottomAnchor),
-            separator.bottomAnchor.constraint(equalTo: receiverMessageView.topAnchor),
+            separator.topAnchor.constraint(equalTo: myMessageView.bottomAnchor),
+            separator.bottomAnchor.constraint(equalTo: otherMessageView.topAnchor),
             separator.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             separator.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             separator.heightAnchor.constraint(equalToConstant: CGFloat(Constants.separatorHeightAnchor))
@@ -69,24 +70,24 @@ class ChatViewController: UIViewController  {
     }
     
     private func setupMessageViews() {
-        senderMessageView.setupView()
-        receiverMessageView.setupView()
+        myMessageView.setupView()
+        otherMessageView.setupView()
     }
     
     private func setupDark() {
         overrideUserInterfaceStyle = .dark
         view.backgroundColor = Constants.viewBackgroundColor
         modeButton.setImage(UIImage(named: "darkmode"), for: .normal)
-        senderMessageView.setDark()
-        receiverMessageView.setDark()
+        myMessageView.setDark()
+        otherMessageView.setDark()
     }
     
     private func setupLight() {
         overrideUserInterfaceStyle = .light
         view.backgroundColor = .white
         modeButton.setImage(UIImage(named: "lightmode"), for: .normal)
-        senderMessageView.setLight()
-        receiverMessageView.setLight()
+        myMessageView.setLight()
+        otherMessageView.setLight()
     }
     
     @objc private func switchMode() {

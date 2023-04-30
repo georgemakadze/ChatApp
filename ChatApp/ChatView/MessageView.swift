@@ -15,23 +15,6 @@ class MessageView: UIView {
     private var dataSource: UICollectionViewDiffableDataSource<Section, Message>!
     private let containerView = UIView()
     
-    struct Message: Hashable {
-        let text: String
-        let date: String
-        
-        init(text: String, date: String) {
-            self.text = text
-            self.date = date
-        }
-    }
-    
-    let dataItems = [
-        Message(text: "გამარჯობა, ზეზვა როგორ ხარ?", date: "მარ 14,16:00"),
-        Message(text: "გამარჯობა, მზია როგორ ხარ?", date: "მარ 14,16:05"),
-        Message(text: "კარგად!", date: "მარ 14,16:10"),
-        Message(text: "ნუ მატყუებ!", date: "მარ 14,16:11")
-    ]
-    
     enum Section {
         case main
     }
@@ -40,6 +23,14 @@ class MessageView: UIView {
         backgroundColor = .white
         setupCollectionView()
         setUpContainer()
+    }
+    
+    func setup(messages: [Message]) {
+        var snapshot: NSDiffableDataSourceSnapshot<Section, Message>!
+        snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(messages,  toSection: .main)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     private func setupCollectionView() {
@@ -57,13 +48,19 @@ class MessageView: UIView {
             cell.label.text = item.text
             cell.textDate.text = item.date
             
+            switch item.sender {
+            case .Me: break
+                
+            case.Other: break
+                
+            }
+            
+            
             //            let isMessageFromCurrentUser = item.text == "current_user_id"
             //
             //
             //                cell.label.leadingAnchor.constraint(equalTo: isMessageFromCurrentUser ? cell.contentView.leadingAnchor : cell.contentView.centerXAnchor, constant: 16).isActive = true
             //                cell.label.trailingAnchor.constraint(equalTo: isMessageFromCurrentUser ? cell.contentView.centerXAnchor : cell.contentView.trailingAnchor, constant: -16).isActive = true
-            
-            
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, Message>(collectionView: collectionView) {
@@ -76,14 +73,6 @@ class MessageView: UIView {
             )
             return cell
         }
-    }
-    
-    func applySnapshot() {
-        var snapshot: NSDiffableDataSourceSnapshot<Section, Message>!
-        snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(dataItems, toSection: .main)
-        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     private func setUpContainer() {
