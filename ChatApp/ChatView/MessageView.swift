@@ -49,18 +49,11 @@ class MessageView: UIView {
             cell.textDate.text = item.date
             
             switch item.sender {
-            case .Me: break
-                
-            case.Other: break
-                
+            case .Me:
+                cell.setTrailing()
+            case.Other:
+                cell.setLeading()
             }
-            
-            
-            //            let isMessageFromCurrentUser = item.text == "current_user_id"
-            //
-            //
-            //                cell.label.leadingAnchor.constraint(equalTo: isMessageFromCurrentUser ? cell.contentView.leadingAnchor : cell.contentView.centerXAnchor, constant: 16).isActive = true
-            //                cell.label.trailingAnchor.constraint(equalTo: isMessageFromCurrentUser ? cell.contentView.centerXAnchor : cell.contentView.trailingAnchor, constant: -16).isActive = true
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, Message>(collectionView: collectionView) {
