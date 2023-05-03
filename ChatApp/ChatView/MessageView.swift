@@ -8,12 +8,18 @@
 import Foundation
 import UIKit
 
+protocol MessageViewDelegate: AnyObject {
+    func didSendMessage(messageView: MessageView, text: String, date: Date)
+}
+
 class MessageView: UIView {
     private let textView = UITextView()
     private let button = UIButton(type: .custom)
     private var collectionView: UICollectionView!
     private var dataSource: UICollectionViewDiffableDataSource<Section, Message>!
     private let containerView = UIView()
+    
+    weak var delegate: MessageViewDelegate?
     
     enum Section {
         case main
@@ -30,7 +36,7 @@ class MessageView: UIView {
         snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
         snapshot.appendSections([.main])
         snapshot.appendItems(messages,  toSection: .main)
-        dataSource.apply(snapshot, animatingDifferences: true)
+        dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
     }
     
     private func setupCollectionView() {
@@ -43,6 +49,7 @@ class MessageView: UIView {
         self.addSubview(collectionView)
         
         setupCollectionViewConstant()
+       
         
         let cellRegistration = UICollectionView.CellRegistration<MessageCell, Message> { (cell, indexPath, item) in
             cell.label.text = item.text
@@ -51,7 +58,7 @@ class MessageView: UIView {
             switch item.sender {
             case .Me:
                 cell.setTrailing()
-            case.Other:
+            case .Other:
                 cell.setLeading()
             }
         }
@@ -88,13 +95,20 @@ class MessageView: UIView {
     
     private func makeButton() {
         button.setImage(UIImage(named: "send"), for: .normal)
+        button.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
         containerView.addSubview(button)
+    }
+    
+    @objc private func didTapSendButton() {
+        if let message = textView.text {
+            delegate?.didSendMessage(messageView: self, text: message, date: Date())
+        }
     }
     
     private func makeTextView() {
         textView.textAlignment = .left
         textView.textColor = Constants.textViewTextColor
-        textView.font = UIFont.systemFont(ofSize:CGFloat(Constants.textViewFont))
+        textView.font = .systemFont(ofSize:CGFloat(Constants.textViewFontSize))
         textView.text = "დაწერეთ შეტყობინება..."
         containerView.addSubview(textView)
     }
@@ -102,7 +116,7 @@ class MessageView: UIView {
     private func setupCollectionViewConstant() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: CGFloat(Constants.collectionViewTopAnchor)),
+            collectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: CGFloat(Constants.collectionViewPadding)),
             collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
@@ -112,9 +126,9 @@ class MessageView: UIView {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
-            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: CGFloat(Constants.containerViewLeadingAnchor)),
-            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: CGFloat(Constants.containerViewTrailingAnchor)),
-            containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: CGFloat(Constants.containerViewBottomAnchor))
+            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: CGFloat(Constants.collectionViewPadding)),
+            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: CGFloat(-Constants.collectionViewPadding)),
+            containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: CGFloat(-Constants.collectionViewPadding))
         ])
     }
     
@@ -153,10 +167,7 @@ class MessageView: UIView {
 
 extension MessageView {
     enum Constants {
-        static let collectionViewTopAnchor = 16
-        static let containerViewLeadingAnchor = 16
-        static let containerViewTrailingAnchor = -16
-        static let containerViewBottomAnchor = -16
+        static let collectionViewPadding = 16
         static let textViewLeadingAnchor = 16
         static let textViewBottomAnchor = -8
         static let textViewHeightAnchor = 44
@@ -165,7 +176,7 @@ extension MessageView {
         static let buttonLeadingAnchor = 10
         static let containerViewLayerBorderWidth = 1
         static let containerViewLayerCornerRadius = 28
-        static let textViewFont = 16
+        static let textViewFontSize = 16
         static let containerViewBackgroundColor = UIColor(hex: "F1F1F1")
         static let conteinerViewLayerBorderColor = UIColor(hex: "9F60FF").cgColor
         static let textViewTextColor = UIColor(hex: "C7C7C7")

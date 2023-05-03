@@ -13,9 +13,7 @@ class MessageCell: UICollectionViewCell {
     private var trailingConstraints: [NSLayoutConstraint] = []
     let label = UILabel()
     let containerView = UIView()
-    //    let elipse = UIView()
     let textDate = UILabel()
-    //    let label2 = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,27 +44,18 @@ class MessageCell: UICollectionViewCell {
     
     private func makeTextDate() {
         textDate.textColor = Constants.textDateTextColor
-        textDate.font = UIFont.systemFont(ofSize: CGFloat(Constants.textDateFontSize))
+        textDate.font = .systemFont(ofSize: CGFloat(Constants.textDateFontSize))
         contentView.addSubview(textDate)
     }
     
     private func makeLabel() {
         label.backgroundColor = .clear
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: CGFloat(Constants.labelFontSize))
+        label.font = .systemFont(ofSize: CGFloat(Constants.labelFontSize))
         label.numberOfLines = .zero
         label.lineBreakMode = .byWordWrapping
         containerView.addSubview(label)
     }
-    
-    //    func makeLabel2() {
-    //        label2.backgroundColor = .clear
-    //        label2.textColor = .black
-    //        label2.font = UIFont.systemFont(ofSize: CGFloat(Constants.labelFontSize))
-    //        label2.numberOfLines = .zero
-    //        label2.lineBreakMode = .byWordWrapping
-    //        containerView.addSubview(label2)
-    //    }
     
     private func setupContainerViewConstant() {
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -90,27 +79,6 @@ class MessageCell: UICollectionViewCell {
         NSLayoutConstraint.activate(leadingConstraints)
         NSLayoutConstraint.deactivate(trailingConstraints)
     }
-    
-    //    func otherConteinerConstants() {
-    //        containerView.translatesAutoresizingMaskIntoConstraints = false
-    //        NSLayoutConstraint.activate([
-    //            //            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-    //            containerView.leadingAnchor.constraint(equalTo: label2.leadingAnchor, constant: -16),
-    //            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2),
-    //            //containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-    //        ])
-    //    }
-    
-    //    func otherLabel() {
-    //        label2.translatesAutoresizingMaskIntoConstraints = false
-    //        NSLayoutConstraint.activate([
-    //            label2.topAnchor.constraint(equalTo: containerView.topAnchor, constant: CGFloat(Constants.labelTopAnchor)),
-    //            label2.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: CGFloat(Constants.labelBottomAnchor)),
-    //            label2.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-    //            label2.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16)
-    //
-    //        ])
-    //    }
     
     private func setupLabelConstant() {
         label.translatesAutoresizingMaskIntoConstraints = false

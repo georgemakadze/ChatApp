@@ -16,13 +16,13 @@ class ChatViewController: UIViewController {
     private let otherMessageView = MessageView()
     private let separator = UIView()
     private var stackView: UIStackView!
-    var isDarkMode = false
+    private var isDarkMode = false
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        myMessageView.setup(messages: chatViewModel.senderMessages)
-        otherMessageView.setup(messages: chatViewModel.receiveMessages)
+        myMessageView.setup(messages: chatViewModel.myMessages)
+        otherMessageView.setup(messages: chatViewModel.otherMessages)
     }
     
     override func viewDidLoad() {
@@ -72,6 +72,9 @@ class ChatViewController: UIViewController {
     private func setupMessageViews() {
         myMessageView.setupView()
         otherMessageView.setupView()
+        
+        myMessageView.delegate = self
+        otherMessageView.delegate = self
     }
     
     private func setupDark() {
@@ -91,11 +94,17 @@ class ChatViewController: UIViewController {
     }
     
     @objc private func switchMode() {
-        isDarkMode = !isDarkMode
-        if isDarkMode {
-            setupDark()
-        } else {
-            setupLight()
+        isDarkMode.toggle()
+        isDarkMode ? setupDark() : setupLight()
+    }
+}
+
+extension ChatViewController: MessageViewDelegate {
+    func didSendMessage(messageView: MessageView, text: String, date: Date) {
+        if messageView == myMessageView {
+            print("my: \(text)")
+        } else if messageView == otherMessageView {
+            print("other: \(text)")
         }
     }
 }
