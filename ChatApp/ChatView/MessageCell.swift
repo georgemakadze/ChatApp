@@ -9,11 +9,15 @@ import Foundation
 import UIKit
 
 class MessageCell: UICollectionViewCell {
+    
+    // MARK: - Properties
     private var leadingConstraints: [NSLayoutConstraint] = []
     private var trailingConstraints: [NSLayoutConstraint] = []
-    let label = UILabel()
-    let containerView = UIView()
-    let textDate = UILabel()
+    private let label = UILabel()
+    private let containerView = UIView()
+    private let textDate = UILabel()
+    
+    // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,7 +25,13 @@ class MessageCell: UICollectionViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("nope!")
+        fatalError("error!")
+    }
+    
+    func configure(with item: Message) {
+        label.text = item.text
+        textDate.text = item.date
+        item.sender == .me ? setTrailing() : setLeading()
     }
     
     private func setup() {
@@ -36,17 +46,23 @@ class MessageCell: UICollectionViewCell {
         setupTextDateConstant()
     }
     
+    // MARK: - Make container
+    
     private func makeContainer() {
         containerView.backgroundColor = Constants.containerViewBackgroundColor
         containerView.layer.cornerRadius = CGFloat(Constants.containerViewRadius)
         contentView.addSubview(containerView)
     }
     
+    // MARK: - Make textDate
+    
     private func makeTextDate() {
         textDate.textColor = Constants.textDateTextColor
         textDate.font = .systemFont(ofSize: CGFloat(Constants.textDateFontSize))
         contentView.addSubview(textDate)
     }
+    
+    // MARK: - Make label
     
     private func makeLabel() {
         label.backgroundColor = .clear
@@ -57,28 +73,32 @@ class MessageCell: UICollectionViewCell {
         containerView.addSubview(label)
     }
     
+    // MARK: - ContainerView constants
+    
     private func setupContainerViewConstant() {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         leadingConstraints = [
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: label.trailingAnchor, constant: CGFloat(Constants.containerViewTrailingAnchor))
+            containerView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: CGFloat(-Constants.containerViewTrailingAnchor))
         ]
         trailingConstraints = [
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.leadingAnchor.constraint(equalTo: label.leadingAnchor, constant: CGFloat(Constants.containerViewTrailingAnchor))
+            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: CGFloat(Constants.containerViewTrailingAnchor))
         ]
     }
     
-    func setTrailing() {
+    private func setTrailing() {
         NSLayoutConstraint.activate(trailingConstraints)
         NSLayoutConstraint.deactivate(leadingConstraints)
     }
     
-    func setLeading() {
+    private func setLeading() {
         NSLayoutConstraint.activate(leadingConstraints)
         NSLayoutConstraint.deactivate(trailingConstraints)
     }
+    
+    // MARK: - Label constants
     
     private func setupLabelConstant() {
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -89,6 +109,8 @@ class MessageCell: UICollectionViewCell {
             label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: CGFloat(Constants.labelBottomAnchor))
         ])
     }
+    
+    // MARK: - Textdate constants
     
     private func setupTextDateConstant() {
         textDate.translatesAutoresizingMaskIntoConstraints = false
@@ -102,6 +124,8 @@ class MessageCell: UICollectionViewCell {
         trailingConstraints.append(textDate.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: CGFloat(-Constants.textDateLeadingAnchor)))
     }
 }
+
+// MARK: - Constants
 
 extension MessageCell {
     enum Constants {

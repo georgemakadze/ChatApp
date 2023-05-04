@@ -12,15 +12,10 @@ struct Message: Hashable {
     let text: String
     let date: String
     let sender: Sender
-    init(text: String, date: String, sender: Sender) {
-        self.text = text
-        self.date = date
-        self.sender = sender
-    }
 }
 
 enum Sender {
-    case Me
-    case Other
+    case me
+    case other
 }
 

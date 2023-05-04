@@ -13,6 +13,9 @@ protocol MessageViewDelegate: AnyObject {
 }
 
 class MessageView: UIView {
+    
+    // MARK: - Properties
+    
     private let textView = UITextView()
     private let button = UIButton(type: .custom)
     private var collectionView: UICollectionView!
@@ -32,12 +35,18 @@ class MessageView: UIView {
     }
     
     func setup(messages: [Message]) {
-        var snapshot: NSDiffableDataSourceSnapshot<Section, Message>!
-        snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
         snapshot.appendSections([.main])
         snapshot.appendItems(messages,  toSection: .main)
-        dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
+        dataSource.apply(snapshot, animatingDifferences: true, completion: { [weak self] in
+            guard let self = self else { return }
+            let lastItemIndex = self.collectionView.numberOfItems(inSection: 0) - 1
+            let lastIndexPath = IndexPath(item: lastItemIndex, section: 0)
+            self.collectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: true)
+        })
     }
+    
+    // MARK: - Make CollectionView
     
     private func setupCollectionView() {
         var layoutConfig = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
@@ -49,18 +58,9 @@ class MessageView: UIView {
         self.addSubview(collectionView)
         
         setupCollectionViewConstant()
-       
         
         let cellRegistration = UICollectionView.CellRegistration<MessageCell, Message> { (cell, indexPath, item) in
-            cell.label.text = item.text
-            cell.textDate.text = item.date
-            
-            switch item.sender {
-            case .Me:
-                cell.setTrailing()
-            case .Other:
-                cell.setLeading()
-            }
+            cell.configure(with: item)
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, Message>(collectionView: collectionView) {
@@ -75,6 +75,8 @@ class MessageView: UIView {
         }
     }
     
+    // MARK: - Set Container
+    
     private func setUpContainer() {
         makeContainer()
         makeButton()
@@ -85,6 +87,8 @@ class MessageView: UIView {
         setupButtonConstant()
     }
     
+    // MARK: - Make Container
+    
     private func makeContainer() {
         containerView.backgroundColor = Constants.containerViewBackgroundColor
         containerView.layer.borderColor = Constants.conteinerViewLayerBorderColor
@@ -92,6 +96,8 @@ class MessageView: UIView {
         containerView.layer.cornerRadius = CGFloat(Constants.containerViewLayerCornerRadius)
         addSubview(containerView)
     }
+    
+    // MARK: - Make send button
     
     private func makeButton() {
         button.setImage(UIImage(named: "send"), for: .normal)
@@ -105,6 +111,8 @@ class MessageView: UIView {
         }
     }
     
+    // MARK: - Make textView
+    
     private func makeTextView() {
         textView.textAlignment = .left
         textView.textColor = Constants.textViewTextColor
@@ -112,6 +120,8 @@ class MessageView: UIView {
         textView.text = "დაწერეთ შეტყობინება..."
         containerView.addSubview(textView)
     }
+    
+    //MARK: - CollectionView constants
     
     private func setupCollectionViewConstant() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -121,6 +131,8 @@ class MessageView: UIView {
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
     }
+    
+    // MARK: - ContainerView constants
     
     private func setupConteinerViewConstant() {
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -132,6 +144,8 @@ class MessageView: UIView {
         ])
     }
     
+    // MARK: - TextDate constants
+    
     private func setupTextDateConstant() {
         textView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -141,6 +155,8 @@ class MessageView: UIView {
             textView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: CGFloat(Constants.textViewTopAnchor))
         ])
     }
+    
+    // MARK: - Button constants
     
     private func setupButtonConstant() {
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -152,18 +168,14 @@ class MessageView: UIView {
         ])
     }
     
-    func setDark() {
-        backgroundColor = Constants.backgroundColor
-        containerView.backgroundColor = Constants.darkContainerViewBackgroundColor
-        textView.textColor = .white
-    }
-    
-    func setLight() {
-        backgroundColor = .white
-        containerView.backgroundColor = .white
-        textView.textColor = .black
+    func setAppearance(isDark: Bool) {
+        backgroundColor = isDark ? Constants.backgroundColor : .white
+        containerView.backgroundColor = isDark ?  Constants.darkContainerViewBackgroundColor : .white
+        textView.textColor = isDark ?  .white : .black
     }
 }
+
+// MARK: - Constants
 
 extension MessageView {
     enum Constants {
