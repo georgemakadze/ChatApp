@@ -77,7 +77,7 @@ class ChatViewController: UIViewController {
             separator.bottomAnchor.constraint(equalTo: bottomMessageView.topAnchor),
             separator.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             separator.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            separator.heightAnchor.constraint(equalToConstant: CGFloat(Constants.separatorHeightAnchor))
+            separator.heightAnchor.constraint(equalToConstant: (Constants.separatorHeightAnchor))
         ])
     }
     
@@ -130,7 +130,7 @@ extension ChatViewController: MessageViewDelegate {
 
 extension ChatViewController {
     enum Constants {
-        static let separatorHeightAnchor = 6
+        static let separatorHeightAnchor: CGFloat = 6
         static let viewBackgroundColor = UIColor(hex: "160039")
     }
 }
