@@ -12,13 +12,11 @@ class ChatViewController: UIViewController {
     // MARK: - Properties
     
     private let chatViewModel: ChatViewModel
-    private let modeButton = UIButton(type: .custom)
-    private let lightModeButton = UIButton(type: .custom)
-    private let darkModeButton = UIButton(type: .custom)
+    private let modeButtonView = ModeButtonView()
     private let topMessageView = MessageView()
     private let bottomMessageView = MessageView()
-    private let separator = UIView()
-    private var stackView = UIStackView()
+    private lazy var separator = UIView()
+    private lazy var stackView = UIStackView()
     private var isDarkMode = false
     
     // MARK: - Initilizers
@@ -82,9 +80,8 @@ class ChatViewController: UIViewController {
     }
     
     private func setupNavigationItems() {
-        modeButton.setImage(UIImage(named: "darkmode"), for: .normal)
-        modeButton.addTarget(self, action: #selector(makeSwitchMode), for: .touchUpInside)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: modeButton)
+        modeButtonView.addTarget(self, action: #selector(makeSwitchMode), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: modeButtonView)
     }
     
     private func setupMessageViews() {
@@ -98,7 +95,8 @@ class ChatViewController: UIViewController {
     func setupMode(isDark: Bool) {
         overrideUserInterfaceStyle = isDark ? .dark : .light
         view.backgroundColor = isDark ? Constants.viewBackgroundColor : .white
-        isDark ? modeButton.setImage(UIImage(named: "darkmode"), for: .normal) : modeButton.setImage(UIImage(named: "lightmode"), for: .normal)
+        isDark ? modeButtonView.setImage(ModeButtonView.Constants.Button.darkImage, for: .normal) : modeButtonView.setImage(ModeButtonView.Constants.Button.lightImage, for: .normal)
+        
         topMessageView.setAppearance(isDark: isDark)
         bottomMessageView.setAppearance(isDark: isDark)
     }

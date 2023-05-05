@@ -9,30 +9,30 @@ import Foundation
 import UIKit
 
 protocol InputViewDelegate: AnyObject {
-    func didtapSendButton(inputView: InputView, text: String, date: Date)
+    func didTapSendButton(inputView: InputView, text: String, date: Date)
 }
 
-class InputView: UIView {
+class InputView: UIView, UITextViewDelegate {
     
     // MARK: - Properties
     
-    private let textView = UITextView()
+    private lazy var textView = UITextView()
     private let button = UIButton(type: .custom)
-    private let containerView = UIView()
+    private lazy var containerView = UIView()
     
     weak var delegate: InputViewDelegate?
     
     // MARK: - Lifecycle Methods
     
     required public init?(coder aDecoder: NSCoder) {
-            super.init(coder: aDecoder)
-            setup()
-        }
-
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            setup()
-        }
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
     
     func setup() {
         makeContainer()
@@ -63,8 +63,40 @@ class InputView: UIView {
         textView.textColor = Constants.TextView.textColor
         textView.font = .systemFont(ofSize:(Constants.TextView.fontSize))
         textView.text = Constants.TextView.text
+        textView.delegate = self
         containerView.addSubview(textView)
     }
+    
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        if textView.text == Constants.TextView.text {
+            textView.text = ""
+        }
+        return true
+    }
+    
+    //    func textViewDidChange(_ textView: UITextView) {
+    //            let numLines = textView.contentSize.height / textView.font!.lineHeight
+    //            if numLines >= 5 {
+    //                textView.isScrollEnabled = true
+    //                textView.frame.size.height = textView.contentSize.height
+    //            } else {
+    //                textView.isScrollEnabled = false
+    //                textView.frame.size.height = Constants.TextView.defaultHeight
+    //            }
+    //        }
+    
+    //    func textViewDidChange(_ textView: UITextView) {
+    //        let numLines = textView.contentSize.height / textView.font!.lineHeight
+    //        if numLines >= 5 {
+    //            textView.isScrollEnabled = true
+    //            textView.frame.size.height = textView.contentSize.height
+    //        } else {
+    //            textView.isScrollEnabled = false
+    //            textView.frame.size.height = max(textView.intrinsicContentSize.height, Constants.TextView.defaultHeight)
+    //        }
+    //    }
+    
+    
     
     private func setupContainerViewConstraints() {
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -98,7 +130,8 @@ class InputView: UIView {
     
     @objc private func didTapSendButton() {
         if let message = textView.text {
-            delegate?.didtapSendButton(inputView: self, text: message, date: Date())
+            delegate?.didTapSendButton(inputView: self, text: message, date: Date())
+            textView.text = ""
         }
     }
     
@@ -119,6 +152,7 @@ extension InputView {
             static let fontSize: CGFloat = 16
             static let textColor = UIColor(hex: "C7C7C7")
             static let text = "დაწერეთ შეტყობინება..."
+            static let defaultHeight: CGFloat = 100
         }
         enum Button {
             static let trailingAnchor: CGFloat = -8

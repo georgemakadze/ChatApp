@@ -104,7 +104,7 @@ class MessageView: UIView {
 }
 
 extension MessageView: InputViewDelegate {
-    func didtapSendButton(inputView: InputView, text: String, date: Date) {
+    func didTapSendButton(inputView: InputView, text: String, date: Date) {
         delegate?.didSendMessage(messageView: self, text: text, date: Date())
     }
 }

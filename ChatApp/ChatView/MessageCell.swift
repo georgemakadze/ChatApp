@@ -15,7 +15,7 @@ class MessageCell: UICollectionViewCell {
     private var leadingConstraints: [NSLayoutConstraint] = []
     private var trailingConstraints: [NSLayoutConstraint] = []
     private let label = UILabel()
-    private let containerView = UIView()
+    private lazy var containerView = UIView()
     private let textDate = UILabel()
     
     // MARK: - Initializers
@@ -85,16 +85,6 @@ class MessageCell: UICollectionViewCell {
         ]
     }
     
-//    private func setTrailing() {
-//        NSLayoutConstraint.activate(trailingConstraints)
-//        NSLayoutConstraint.deactivate(leadingConstraints)
-//    }
-//    
-//    private func setLeading() {
-//        NSLayoutConstraint.activate(leadingConstraints)
-//        NSLayoutConstraint.deactivate(trailingConstraints)
-//    }
-//    
     private func setBubblePosition(isTrailing: Bool) {
         if isTrailing {
             NSLayoutConstraint.activate(trailingConstraints)
