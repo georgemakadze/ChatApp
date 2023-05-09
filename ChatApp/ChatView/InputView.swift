@@ -74,27 +74,27 @@ class InputView: UIView, UITextViewDelegate {
         return true
     }
     
-    //    func textViewDidChange(_ textView: UITextView) {
-    //            let numLines = textView.contentSize.height / textView.font!.lineHeight
-    //            if numLines >= 5 {
-    //                textView.isScrollEnabled = true
-    //                textView.frame.size.height = textView.contentSize.height
-    //            } else {
-    //                textView.isScrollEnabled = false
-    //                textView.frame.size.height = Constants.TextView.defaultHeight
-    //            }
-    //        }
+//        func textViewDidChange(_ textView: UITextView) {
+//                let numLines = textView.contentSize.height / textView.font!.lineHeight
+//                if numLines >= 5 {
+//                    textView.isScrollEnabled = true
+//                    textView.frame.size.height = textView.contentSize.height
+//                } else {
+//                    textView.isScrollEnabled = false
+//                    textView.frame.size.height = Constants.TextView.defaultHeight
+//                }
+//            }
     
-    //    func textViewDidChange(_ textView: UITextView) {
-    //        let numLines = textView.contentSize.height / textView.font!.lineHeight
-    //        if numLines >= 5 {
-    //            textView.isScrollEnabled = true
-    //            textView.frame.size.height = textView.contentSize.height
-    //        } else {
-    //            textView.isScrollEnabled = false
-    //            textView.frame.size.height = max(textView.intrinsicContentSize.height, Constants.TextView.defaultHeight)
-    //        }
-    //    }
+//        func textViewDidChange(_ textView: UITextView) {
+//            let numLines = textView.contentSize.height / textView.font!.lineHeight
+//            if numLines >= 5 {
+//                textView.isScrollEnabled = true
+//                textView.frame.size.height = textView.contentSize.height
+//            } else {
+//                textView.isScrollEnabled = false
+//                textView.frame.size.height = max(textView.intrinsicContentSize.height, Constants.TextView.defaultHeight)
+//            }
+//        }
     
     
     

@@ -10,18 +10,17 @@ import UIKit
 
 protocol MessageViewDelegate: AnyObject {
     func didSendMessage(messageView: MessageView, text: String, date: Date)
-    
 }
 
 class MessageView: UIView {
     
     // MARK: - Properties
     
-    private let messageInputView = InputView()
+    private lazy var messageInputView = InputView()
     private var collectionView: UICollectionView!
     private var dataSource: UICollectionViewDiffableDataSource<Section, Message>!
-    
     weak var delegate: MessageViewDelegate?
+    private var isDarkMode = false
     
     enum Section {
         case main
@@ -48,17 +47,6 @@ class MessageView: UIView {
     
     // MARK: - Make View
     
-    func inputView() {
-        addSubview(messageInputView)
-        messageInputView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            messageInputView.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
-            messageInputView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: (Constants.CollectionView.padding)),
-            messageInputView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: (-Constants.CollectionView.padding)),
-            messageInputView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: (-Constants.CollectionView.padding))
-        ])
-    }
-    
     private func setupCollectionView() {
         var layoutConfig = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         layoutConfig.showsSeparators = false
@@ -70,8 +58,9 @@ class MessageView: UIView {
         
         setupCollectionViewConstraints()
         
-        let cellRegistration = UICollectionView.CellRegistration<MessageCell, Message> { (cell, indexPath, item) in
+        let cellRegistration = UICollectionView.CellRegistration<MessageCell, Message> { [self] (cell, indexPath, item) in
             cell.configure(with: item)
+            cell.setAppearance(isDark: isDarkMode)
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, Message>(collectionView: collectionView) {
@@ -86,6 +75,17 @@ class MessageView: UIView {
         }
     }
     
+    func inputView() {
+        addSubview(messageInputView)
+        messageInputView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            messageInputView.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
+            messageInputView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: (Constants.CollectionView.padding)),
+            messageInputView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: (-Constants.CollectionView.padding)),
+            messageInputView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: (-Constants.CollectionView.padding))
+        ])
+    }
+    
     //MARK: - CollectionView constraints
     
     private func setupCollectionViewConstraints() {
@@ -97,10 +97,12 @@ class MessageView: UIView {
         ])
     }
     
-        func setAppearance(isDark: Bool) {
-            backgroundColor = isDark ? Constants.backgroundColor : .white
-            messageInputView.setAppearance(isDark: isDark)
-        }
+    func setAppearance(isDark: Bool) {
+        backgroundColor = isDark ? Constants.backgroundColor : .white
+        messageInputView.setAppearance(isDark: isDark)
+        isDarkMode = isDark
+        collectionView.reloadData()
+    }
 }
 
 extension MessageView: InputViewDelegate {

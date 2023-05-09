@@ -68,7 +68,6 @@ class ChatViewController: UIViewController {
     private func setupSeparator() {
         separator.backgroundColor = .yellow
         view.addSubview(separator)
-        
         separator.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             separator.topAnchor.constraint(equalTo: topMessageView.bottomAnchor),
@@ -96,7 +95,6 @@ class ChatViewController: UIViewController {
         overrideUserInterfaceStyle = isDark ? .dark : .light
         view.backgroundColor = isDark ? Constants.viewBackgroundColor : .white
         isDark ? modeButtonView.setImage(ModeButtonView.Constants.Button.darkImage, for: .normal) : modeButtonView.setImage(ModeButtonView.Constants.Button.lightImage, for: .normal)
-        
         topMessageView.setAppearance(isDark: isDark)
         bottomMessageView.setAppearance(isDark: isDark)
     }

@@ -24,14 +24,14 @@ class ChatViewModel {
     func sendMessage(text: String, date: Date, sender: Sender) {
         switch sender {
         case .other:
-            let otherMessage = Message(text: text, date: "TODO", sender: .me)
-            let myMessage = Message(text: text, date: "TODO", sender: .other)
+            let otherMessage = Message(text: text, date: "მარ 14,16:00", sender: .me)
+            let myMessage = Message(text: text, date: "მარ 14,16:00", sender: .other)
             
             myMessages.append(myMessage)
             otherMessages.append(otherMessage)
         case .me:
-            let otherMessage = Message(text: text, date: "TODO", sender: .other)
-            let myMessage = Message(text: text, date: "TODO", sender: .me)
+            let otherMessage = Message(text: text, date: "მარ 14,16:00", sender: .other)
+            let myMessage = Message(text: text, date: "მარ 14,16:00", sender: .me)
             
             myMessages.append(myMessage)
             otherMessages.append(otherMessage)

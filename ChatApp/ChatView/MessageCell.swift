@@ -47,10 +47,14 @@ class MessageCell: UICollectionViewCell {
         setupTextDateConstant()
     }
     
+    func setAppearance(isDark: Bool) {
+        containerView.backgroundColor = isDark ? Constants.Container.containerDarkMode : Constants.Container.containerLightMode
+    }
+    
     // MARK: - Make View
     
     private func makeContainer() {
-        containerView.backgroundColor = Constants.Container.containerViewBackgroundColor
+        containerView.backgroundColor = Constants.Container.containerLightMode
         containerView.layer.cornerRadius = (Constants.Container.containerViewRadius)
         contentView.addSubview(containerView)
     }
@@ -126,7 +130,8 @@ extension MessageCell {
         enum Container {
             static let containerViewTrailingAnchor: CGFloat = 16
             static let containerViewRadius: CGFloat = 25
-            static let containerViewBackgroundColor = UIColor(hex: "F1F1F1")
+            static let containerLightMode = UIColor(hex: "F1F1F1")
+            static let containerDarkMode = UIColor(hex: "DAC2FF")
             
         }
         enum TextDate {
