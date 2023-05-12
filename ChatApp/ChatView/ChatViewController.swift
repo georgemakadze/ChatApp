@@ -121,9 +121,9 @@ class ChatViewController: UIViewController {
 extension ChatViewController: MessageViewDelegate {
     func didSendMessage(messageView: MessageView, text: String, date: Date) {
         if messageView == topMessageView {
-            chatViewModel.sendMessage(text: text, date: date, userID: 1)
+            chatViewModel.sendMessage(text: text, date: date, userID: chatViewModel.topUserID)
         } else if messageView == bottomMessageView {
-            chatViewModel.sendMessage(text: text, date: date, userID: 2)
+            chatViewModel.sendMessage(text: text, date: date, userID: chatViewModel.bottomUserID)
         }
         
         topMessageView.setup(messages: chatViewModel.allMessages)
