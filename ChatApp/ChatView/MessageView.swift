@@ -21,6 +21,16 @@ class MessageView: UIView {
     private var dataSource: UICollectionViewDiffableDataSource<Section, Message>!
     weak var delegate: MessageViewDelegate?
     private var isDarkMode = false
+    private let currentUserId: Int
+    
+    init(currentUserId: Int) {
+        self.currentUserId = currentUserId
+        super.init(frame: .zero)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     enum Section {
         case main
@@ -59,7 +69,7 @@ class MessageView: UIView {
         setupCollectionViewConstraints()
         
         let cellRegistration = UICollectionView.CellRegistration<MessageCell, Message> { [self] (cell, indexPath, item) in
-            cell.configure(with: item)
+            cell.configure(with: item, currentUserId: currentUserId)
             cell.setAppearance(isDark: isDarkMode)
         }
         

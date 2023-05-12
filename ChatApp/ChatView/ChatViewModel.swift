@@ -9,34 +9,18 @@ import Foundation
 import UIKit
 
 class ChatViewModel {
-    private(set) var myMessages: [Message] = [
-        Message(text: "Hello, how are you?", date: "მარ 14,16:00", sender: .other),
-        Message(text: "I'm doing well, thank you. How about you?", date: "მარ 14,16:05", sender: .me),
-        Message(text: "I'm good, thanks!", date: "მარ 14,16:15", sender: .other)
+    let topUserID = 1
+    let bottomUserID = 2
+    
+    private(set) lazy var allMessages: [Message] = [
+        Message(text: "Hello, how are you?", date: "მარ 14,16:00", userID: topUserID),
+        Message(text: "I'm doing well, thanks. How about you?", date: "მარ 14,16:05", userID: bottomUserID),
+        Message(text: "I'm good, thanks!", date: "მარ 14,16:15", userID: topUserID),
+        Message(text: "Okay bye", date: "მარ 14,16:00", userID: bottomUserID),
     ]
     
-    private(set) var otherMessages: [Message] = [
-        Message(text: "Hello, how are you?", date: "მარ 14,16:00", sender: .me),
-        Message(text: "I'm doing well, thank you. How about you?", date: "მარ 14,16:05", sender: .other),
-        Message(text: "I'm good, thanks!", date: "მარ 14,16:15", sender: .me)
-    ]
-    
-    func sendMessage(text: String, date: Date, sender: Sender) {
-        switch sender {
-        case .other:
-            let otherMessage = Message(text: text, date: "მარ 14,16:00", sender: .me)
-            let myMessage = Message(text: text, date: "მარ 14,16:00", sender: .other)
-            
-            myMessages.append(myMessage)
-            otherMessages.append(otherMessage)
-        case .me:
-            let otherMessage = Message(text: text, date: "მარ 14,16:00", sender: .other)
-            let myMessage = Message(text: text, date: "მარ 14,16:00", sender: .me)
-            
-            myMessages.append(myMessage)
-            otherMessages.append(otherMessage)
-        }
+    func sendMessage(text: String, date: Date, userID: Int) {
+        let message = Message(text: text, date: "მარ 14,16:00", userID: userID)
+        allMessages.append(message)
     }
-    
 }
-

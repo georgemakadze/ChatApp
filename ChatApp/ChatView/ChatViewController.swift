@@ -13,8 +13,8 @@ class ChatViewController: UIViewController {
     
     private let chatViewModel: ChatViewModel
     private let modeButtonView = ModeButtonView()
-    private let topMessageView = MessageView()
-    private let bottomMessageView = MessageView()
+    private let topMessageView: MessageView
+    private let bottomMessageView: MessageView
     private lazy var separator = UIView()
     private lazy var stackView = UIStackView()
     private var isDarkMode = false
@@ -23,6 +23,8 @@ class ChatViewController: UIViewController {
     
     init(with viewModel: ChatViewModel) {
         chatViewModel = viewModel
+        topMessageView = MessageView(currentUserId: viewModel.topUserID)
+        bottomMessageView = MessageView(currentUserId: viewModel.bottomUserID)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -35,8 +37,8 @@ class ChatViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        topMessageView.setup(messages: chatViewModel.myMessages)
-        bottomMessageView.setup(messages: chatViewModel.otherMessages)
+        topMessageView.setup(messages: chatViewModel.allMessages)
+        bottomMessageView.setup(messages: chatViewModel.allMessages)
     }
     
     override func viewDidLoad() {
@@ -87,6 +89,7 @@ class ChatViewController: UIViewController {
         topMessageView.setupView()
         bottomMessageView.setupView()
         
+        
         topMessageView.delegate = self
         bottomMessageView.delegate = self
     }
@@ -112,13 +115,13 @@ class ChatViewController: UIViewController {
 extension ChatViewController: MessageViewDelegate {
     func didSendMessage(messageView: MessageView, text: String, date: Date) {
         if messageView == topMessageView {
-            chatViewModel.sendMessage(text: text, date: date, sender: .me)
+            chatViewModel.sendMessage(text: text, date: date, userID: 1)
         } else if messageView == bottomMessageView {
-            chatViewModel.sendMessage(text: text, date: date, sender: .other)
+            chatViewModel.sendMessage(text: text, date: date, userID: 2)
         }
         
-        topMessageView.setup(messages: chatViewModel.myMessages)
-        bottomMessageView.setup(messages: chatViewModel.otherMessages)
+        topMessageView.setup(messages: chatViewModel.allMessages)
+        bottomMessageView.setup(messages: chatViewModel.allMessages)
     }
 }
 
@@ -130,5 +133,3 @@ extension ChatViewController {
         static let viewBackgroundColor = UIColor(hex: "160039")
     }
 }
-
-

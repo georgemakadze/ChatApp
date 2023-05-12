@@ -29,10 +29,10 @@ class MessageCell: UICollectionViewCell {
         fatalError("error!")
     }
     
-    func configure(with item: Message) {
+    func configure(with item: Message, currentUserId: Int) {
         label.text = item.text
         textDate.text = item.date
-        item.sender == .me ? setBubblePosition(isTrailing: true) : setBubblePosition(isTrailing: false)
+        item.userID == currentUserId ? setBubblePosition(isTrailing: true) : setBubblePosition(isTrailing: false)
     }
     
     private func setup() {
@@ -150,5 +150,3 @@ extension MessageCell {
         }
     }
 }
-
-

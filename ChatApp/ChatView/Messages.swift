@@ -11,11 +11,5 @@ struct Message: Hashable {
     let id = UUID().uuidString
     let text: String
     let date: String
-    let sender: Sender
+    let userID: Int
 }
-
-enum Sender {
-    case me
-    case other
-}
-
