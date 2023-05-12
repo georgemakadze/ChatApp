@@ -16,7 +16,7 @@ class MessageCell: UICollectionViewCell {
     private var trailingConstraints: [NSLayoutConstraint] = []
     private let label = UILabel()
     private lazy var containerView = UIView()
-    private let textDate = UILabel()
+    private var textDate = UILabel()
     
     // MARK: - Initializers
     
@@ -31,7 +31,7 @@ class MessageCell: UICollectionViewCell {
     
     func configure(with item: Message, currentUserId: Int) {
         label.text = item.text
-        textDate.text = item.date
+        textDate.text = item.date.formatDAte()
         item.userID == currentUserId ? setBubblePosition(isTrailing: true) : setBubblePosition(isTrailing: false)
     }
     

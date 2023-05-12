@@ -10,6 +10,6 @@ import Foundation
 struct Message: Hashable {
     let id = UUID().uuidString
     let text: String
-    let date: String
+    let date: Date
     let userID: Int
 }

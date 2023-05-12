@@ -19,6 +19,7 @@ class InputView: UIView, UITextViewDelegate {
     private lazy var textView = UITextView()
     private let button = UIButton(type: .custom)
     private lazy var containerView = UIView()
+    private var textViewHeightConstraint: NSLayoutConstraint!
     
     weak var delegate: InputViewDelegate?
     
@@ -74,29 +75,10 @@ class InputView: UIView, UITextViewDelegate {
         return true
     }
     
-//        func textViewDidChange(_ textView: UITextView) {
-//                let numLines = textView.contentSize.height / textView.font!.lineHeight
-//                if numLines >= 5 {
-//                    textView.isScrollEnabled = true
-//                    textView.frame.size.height = textView.contentSize.height
-//                } else {
-//                    textView.isScrollEnabled = false
-//                    textView.frame.size.height = Constants.TextView.defaultHeight
-//                }
-//            }
-    
-//        func textViewDidChange(_ textView: UITextView) {
-//            let numLines = textView.contentSize.height / textView.font!.lineHeight
-//            if numLines >= 5 {
-//                textView.isScrollEnabled = true
-//                textView.frame.size.height = textView.contentSize.height
-//            } else {
-//                textView.isScrollEnabled = false
-//                textView.frame.size.height = max(textView.intrinsicContentSize.height, Constants.TextView.defaultHeight)
-//            }
-//        }
-    
-    
+    func textViewDidChange(_ textView: UITextView) {
+        let numLines = textView.contentSize.height / textView.font!.lineHeight
+        textViewHeightConstraint.constant = textView.font!.lineHeight * min(5,numLines)
+    }
     
     private func setupContainerViewConstraints() {
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -110,10 +92,11 @@ class InputView: UIView, UITextViewDelegate {
     
     private func setupTextViewConstraints() {
         textView.translatesAutoresizingMaskIntoConstraints = false
+        textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: (Constants.TextView.heightAnchor))
         NSLayoutConstraint.activate([
+            textViewHeightConstraint,
             textView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: (Constants.TextView.leadingAnchor)),
             textView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: (Constants.TextView.bottomAnchor)),
-            textView.heightAnchor.constraint(equalToConstant: (Constants.TextView.heightAnchor)),
             textView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: (Constants.TextView.topAnchor))
         ])
     }
@@ -147,7 +130,7 @@ extension InputView {
         enum TextView {
             static let leadingAnchor: CGFloat = 16
             static let bottomAnchor: CGFloat = -8
-            static let heightAnchor: CGFloat = 44
+            static let heightAnchor: CGFloat = 36
             static let topAnchor: CGFloat = 8
             static let fontSize: CGFloat = 16
             static let textColor = UIColor(hex: "C7C7C7")
