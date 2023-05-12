@@ -43,10 +43,11 @@ class ChatViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupModeButton()
         setupStackView()
         setupSeparator()
         setupMessageViews()
-        setupNavigationItems()
+        setupMode(isDark: false)
     }
     
     // MARK: - SetupView
@@ -60,7 +61,7 @@ class ChatViewController: UIViewController {
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stackView.topAnchor.constraint(equalTo: modeButtonView.bottomAnchor, constant: Constants.stackViewTopAnchor),
             stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -80,9 +81,14 @@ class ChatViewController: UIViewController {
         ])
     }
     
-    private func setupNavigationItems() {
+    private func setupModeButton() {
+        view.addSubview(modeButtonView)
         modeButtonView.addTarget(self, action: #selector(makeSwitchMode), for: .touchUpInside)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: modeButtonView)
+        modeButtonView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            modeButtonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            modeButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.modeButtonViewTrailingAnchor)
+        ])
     }
     
     private func setupMessageViews() {
@@ -131,5 +137,7 @@ extension ChatViewController {
     enum Constants {
         static let separatorHeightAnchor: CGFloat = 6
         static let viewBackgroundColor = UIColor(hex: "160039")
+        static let modeButtonViewTrailingAnchor: CGFloat = -12
+        static let stackViewTopAnchor: CGFloat = 8
     }
 }
