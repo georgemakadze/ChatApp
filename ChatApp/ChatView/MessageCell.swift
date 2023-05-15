@@ -16,6 +16,7 @@ class MessageCell: UICollectionViewCell {
     private var trailingConstraints: [NSLayoutConstraint] = []
     private let label = UILabel()
     private lazy var containerView = UIView()
+    private lazy var bubble = UIView()
     private var textDate = UILabel()
     
     // MARK: - Initializers
@@ -45,6 +46,9 @@ class MessageCell: UICollectionViewCell {
         setupContainerViewConstant()
         setupLabelConstant()
         setupTextDateConstant()
+        
+        makeBubble()
+        bubbleConstants()
     }
     
     func setAppearance(isDark: Bool) {
@@ -57,6 +61,12 @@ class MessageCell: UICollectionViewCell {
         containerView.backgroundColor = Constants.Container.containerLightMode
         containerView.layer.cornerRadius = (Constants.Container.containerViewRadius)
         contentView.addSubview(containerView)
+    }
+    
+    func makeBubble() {
+        bubble.backgroundColor = Constants.Container.containerLightMode
+        bubble.layer.cornerRadius = 8
+        contentView.addSubview(bubble)
     }
     
     private func makeTextDate() {
@@ -89,10 +99,22 @@ class MessageCell: UICollectionViewCell {
         ]
     }
     
+    func bubbleConstants() {
+        bubble.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            bubble.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: Constants.Bubble.bubbleBottomAnchor),
+            bubble.widthAnchor.constraint(equalToConstant: Constants.Bubble.bubbleWidthAnchor),
+            bubble.heightAnchor.constraint(equalToConstant: Constants.Bubble.bubbleHeightAnchor)
+        ])
+        leadingConstraints.append(bubble.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.Bubble.bubbleLeadingAnchor))
+        trailingConstraints.append(bubble.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: Constants.Bubble.bubbleTrailingAnchor))
+    }
+    
     private func setBubblePosition(isTrailing: Bool) {
         if isTrailing {
             NSLayoutConstraint.activate(trailingConstraints)
             NSLayoutConstraint.deactivate(leadingConstraints)
+            
         } else {
             NSLayoutConstraint.activate(leadingConstraints)
             NSLayoutConstraint.deactivate(trailingConstraints)
@@ -147,6 +169,13 @@ extension MessageCell {
             static let labelLeadingAnchor: CGFloat = 16
             static let labelTrailingAnchor: CGFloat = -16
             static let labelBottomAnchor: CGFloat = -16
+        }
+        enum Bubble {
+            static let bubbleBottomAnchor: CGFloat = 2
+            static let bubbleWidthAnchor: CGFloat = 16
+            static let bubbleHeightAnchor: CGFloat = 16
+            static let bubbleLeadingAnchor: CGFloat = -1
+            static let bubbleTrailingAnchor: CGFloat = 1
         }
     }
 }
