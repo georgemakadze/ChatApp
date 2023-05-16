@@ -17,6 +17,7 @@ class MessageCell: UICollectionViewCell {
     private let label = UILabel()
     private lazy var containerView = UIView()
     private lazy var bubble = UIView()
+    private lazy var minBubble = UIView()
     private var textDate = UILabel()
     
     // MARK: - Initializers
@@ -48,11 +49,15 @@ class MessageCell: UICollectionViewCell {
         setupTextDateConstant()
         
         makeBubble()
-        bubbleConstants()
+        setupBubbleConstants()
+        
+//        makeMinBubble()
+//        setupMinBubbleConstants()
     }
     
     func setAppearance(isDark: Bool) {
         containerView.backgroundColor = isDark ? Constants.Container.containerDarkMode : Constants.Container.containerLightMode
+        bubble.backgroundColor = isDark ? Constants.Bubble.bubbleDarkMode : Constants.Bubble.bubbleLightMode
     }
     
     // MARK: - Make View
@@ -68,6 +73,12 @@ class MessageCell: UICollectionViewCell {
         bubble.layer.cornerRadius = 8
         contentView.addSubview(bubble)
     }
+    
+//    func makeMinBubble () {
+//        bubble.backgroundColor = .blue
+//        bubble.layer.cornerRadius = 8
+//        contentView.addSubview(bubble)
+//    }
     
     private func makeTextDate() {
         textDate.textColor = Constants.TextDate.textDateTextColor
@@ -90,16 +101,16 @@ class MessageCell: UICollectionViewCell {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         leadingConstraints = [
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             containerView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: (-Constants.Container.containerViewTrailingAnchor))
         ]
         trailingConstraints = [
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             containerView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: (Constants.Container.containerViewTrailingAnchor))
         ]
     }
     
-    func bubbleConstants() {
+    func setupBubbleConstants() {
         bubble.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             bubble.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: Constants.Bubble.bubbleBottomAnchor),
@@ -109,6 +120,23 @@ class MessageCell: UICollectionViewCell {
         leadingConstraints.append(bubble.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.Bubble.bubbleLeadingAnchor))
         trailingConstraints.append(bubble.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: Constants.Bubble.bubbleTrailingAnchor))
     }
+    
+//    func setupMinBubbleConstants() {
+//        minBubble.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//
+//            minBubble.widthAnchor.constraint(equalToConstant: 20),
+//            minBubble.heightAnchor.constraint(equalToConstant: 20),
+//            minBubble.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+//
+//        ])
+//
+//        leadingConstraints.append(minBubble.leadingAnchor.constraint(equalTo: contentView.leadingAnchor))
+//        leadingConstraints.append(minBubble.trailingAnchor.constraint(equalTo: bubble.leadingAnchor, constant: -2))
+//
+//        trailingConstraints.append(minBubble.trailingAnchor.constraint(equalTo: bubble.leadingAnchor, constant: -2))
+//        trailingConstraints.append(minBubble.leadingAnchor.constraint(equalTo: contentView.leadingAnchor))
+//    }
     
     private func setBubblePosition(isTrailing: Bool) {
         if isTrailing {
@@ -176,6 +204,8 @@ extension MessageCell {
             static let bubbleHeightAnchor: CGFloat = 16
             static let bubbleLeadingAnchor: CGFloat = -1
             static let bubbleTrailingAnchor: CGFloat = 1
+            static let bubbleLightMode = UIColor(hex: "F1F1F1")
+            static let bubbleDarkMode = UIColor(hex: "DAC2FF")
         }
     }
 }
