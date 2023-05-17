@@ -12,13 +12,42 @@ protocol InputViewDelegate: AnyObject {
     func didTapSendButton(inputView: InputView, text: String, date: Date)
 }
 
-class InputView: UIView, UITextViewDelegate {
+class InputView: UIView {
     
     // MARK: - Properties
     
-    private lazy var textView = UITextView()
-    private let button = UIButton(type: .custom)
-    private lazy var containerView = UIView()
+    private lazy var textView: UITextView = {
+        let textView = UITextView()
+        textView.backgroundColor = .clear
+        textView.textAlignment = .left
+        textView.textColor = Constants.TextView.textColor
+        textView.font = .systemFont(ofSize:(Constants.TextView.fontSize))
+        textView.text = Constants.TextView.text
+        textView.delegate = self
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(textView)
+        return textView
+    }()
+    
+    private lazy var containerView: UIView = {
+        let containerView = UIView()
+        containerView.backgroundColor = Constants.ContainerView.backgroundColor
+        containerView.layer.borderColor = Constants.ContainerView.layerBorderColor
+        containerView.layer.borderWidth = (Constants.ContainerView.layerBorderWidth)
+        containerView.layer.cornerRadius = (Constants.ContainerView.layerCornerRadius)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(containerView)
+        return containerView
+    }()
+    
+    private lazy var button: UIButton =  {
+        let button = UIButton(type: .custom)
+        button.setImage(Constants.Button.image, for: .normal)
+        button.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
+        containerView.addSubview(button)
+        return button
+    }()
+    
     private var textViewHeightConstraint: NSLayoutConstraint!
     
     weak var delegate: InputViewDelegate?
@@ -36,52 +65,12 @@ class InputView: UIView, UITextViewDelegate {
     }
     
     func setup() {
-        makeContainer()
-        makeButton()
-        makeTextView()
         setupContainerViewConstraints()
         setupTextViewConstraints()
         setupButtonConstraints()
     }
     
-    private func makeContainer() {
-        containerView.backgroundColor = Constants.ContainerView.backgroundColor
-        containerView.layer.borderColor = Constants.ContainerView.layerBorderColor
-        containerView.layer.borderWidth = (Constants.ContainerView.layerBorderWidth)
-        containerView.layer.cornerRadius = (Constants.ContainerView.layerCornerRadius)
-        addSubview(containerView)
-    }
-    
-    private func makeButton() {
-        button.setImage(Constants.Button.image, for: .normal)
-        button.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
-        containerView.addSubview(button)
-    }
-    
-    private func makeTextView() {
-        textView.backgroundColor = .clear
-        textView.textAlignment = .left
-        textView.textColor = Constants.TextView.textColor
-        textView.font = .systemFont(ofSize:(Constants.TextView.fontSize))
-        textView.text = Constants.TextView.text
-        textView.delegate = self
-        containerView.addSubview(textView)
-    }
-    
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        if textView.text == Constants.TextView.text {
-            textView.text = ""
-        }
-        return true
-    }
-    
-    func textViewDidChange(_ textView: UITextView) {
-        let numLines = textView.contentSize.height / textView.font!.lineHeight
-        textViewHeightConstraint.constant = textView.font!.lineHeight * min(5,numLines)
-    }
-    
     private func setupContainerViewConstraints() {
-        containerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: self.topAnchor),
             containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: (Constants.ContainerView.padding)),
@@ -91,7 +80,6 @@ class InputView: UIView, UITextViewDelegate {
     }
     
     private func setupTextViewConstraints() {
-        textView.translatesAutoresizingMaskIntoConstraints = false
         textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: (Constants.TextView.heightAnchor))
         NSLayoutConstraint.activate([
             textViewHeightConstraint,
@@ -122,6 +110,21 @@ class InputView: UIView, UITextViewDelegate {
         backgroundColor = isDark ? Constants.backgroundColor : .white
         containerView.backgroundColor = isDark ?  Constants.ContainerView.darkCBackgroundColor : .white
         textView.textColor = isDark ?  .white : .black
+    }
+}
+
+extension InputView: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        let numLines = textView.contentSize.height / textView.font!.lineHeight
+        textViewHeightConstraint.constant = textView.font!.lineHeight * min(5,numLines)
+    }
+    
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        if textView.text == Constants.TextView.text {
+            textView.text = ""
+        }
+        return true
     }
 }
 

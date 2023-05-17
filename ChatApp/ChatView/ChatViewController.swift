@@ -12,11 +12,35 @@ class ChatViewController: UIViewController {
     // MARK: - Properties
     
     private let chatViewModel: ChatViewModel
-    private let modeButtonView = ModeButtonView()
     private let topMessageView: MessageView
     private let bottomMessageView: MessageView
-    private lazy var separator = UIView()
-    private lazy var stackView = UIStackView()
+    
+    private lazy var modeButtonView: ModeButtonView = {
+        let modeButtonView = ModeButtonView()
+        modeButtonView.addTarget(self, action: #selector(makeSwitchMode), for: .touchUpInside)
+        modeButtonView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(modeButtonView)
+        return modeButtonView
+    }()
+    
+    private lazy var separator: UIView = {
+        let separator = UIView()
+        separator.backgroundColor = .yellow
+        view.addSubview(separator)
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        return separator
+    }()
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [topMessageView, bottomMessageView])
+        stackView.axis = .vertical
+        stackView.spacing = .zero
+        stackView.distribution = .fillEqually
+        view.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     private var isDarkMode = false
     
     // MARK: - Initilizers
@@ -37,29 +61,22 @@ class ChatViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        topMessageView.setup(messages: chatViewModel.allMessages)
-        bottomMessageView.setup(messages: chatViewModel.allMessages)
+        topMessageView.configure(messages: chatViewModel.allMessages)
+        bottomMessageView.configure(messages: chatViewModel.allMessages)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupModeButton()
-        setupStackView()
-        setupSeparator()
+        setupModeButtonConstraints()
+        setupStackViewConstraints()
+        setupSeparatorConstraints()
         setupMessageViews()
         setupMode(isDark: false)
     }
     
     // MARK: - SetupView
     
-    private func setupStackView() {
-        stackView = UIStackView(arrangedSubviews: [topMessageView, bottomMessageView])
-        stackView.axis = .vertical
-        stackView.spacing = .zero
-        stackView.distribution = .fillEqually
-        view.addSubview(stackView)
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupStackViewConstraints() {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: modeButtonView.bottomAnchor, constant: Constants.stackViewTopAnchor),
             stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -68,10 +85,7 @@ class ChatViewController: UIViewController {
         ])
     }
     
-    private func setupSeparator() {
-        separator.backgroundColor = .yellow
-        view.addSubview(separator)
-        separator.translatesAutoresizingMaskIntoConstraints = false
+    private func setupSeparatorConstraints() {
         NSLayoutConstraint.activate([
             separator.topAnchor.constraint(equalTo: topMessageView.bottomAnchor),
             separator.bottomAnchor.constraint(equalTo: bottomMessageView.topAnchor),
@@ -81,10 +95,7 @@ class ChatViewController: UIViewController {
         ])
     }
     
-    private func setupModeButton() {
-        view.addSubview(modeButtonView)
-        modeButtonView.addTarget(self, action: #selector(makeSwitchMode), for: .touchUpInside)
-        modeButtonView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupModeButtonConstraints() {
         NSLayoutConstraint.activate([
             modeButtonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             modeButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.modeButtonViewTrailingAnchor)
@@ -126,8 +137,8 @@ extension ChatViewController: MessageViewDelegate {
             chatViewModel.sendMessage(text: text, date: date, userID: chatViewModel.bottomUserID)
         }
         
-        topMessageView.setup(messages: chatViewModel.allMessages)
-        bottomMessageView.setup(messages: chatViewModel.allMessages)
+        topMessageView.configure(messages: chatViewModel.allMessages)
+        bottomMessageView.configure(messages: chatViewModel.allMessages)
     }
 }
 

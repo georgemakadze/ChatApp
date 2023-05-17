@@ -43,7 +43,7 @@ class MessageView: UIView {
         messageInputView.delegate = self
     }
     
-    func setup(messages: [Message]) {
+    func configure(messages: [Message]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
         snapshot.appendSections([.main])
         snapshot.appendItems(messages,  toSection: .main)

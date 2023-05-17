@@ -1,5 +1,5 @@
 //
-//  Messages.swift
+//  Message.swift
 //  ChatApp
 //
 //  Created by Giorgi Makadze on 29.04.2023.
