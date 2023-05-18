@@ -64,11 +64,12 @@ class MessageCell: UICollectionViewCell {
         fatalError("error!")
     }
     
-    func configure(with item: Message, currentUserId: Int) {
+    func configure(with item: Message, isCurrentUser: Bool) {
         label.text = item.text
         textDate.text = item.date.formatDAte()
-        item.userID == currentUserId ? setBubblePosition(isTrailing: true) : setBubblePosition(isTrailing: false)
+        setBubblePosition(isTrailing: isCurrentUser)
     }
+    
     
     private func setup() {
         contentView.backgroundColor = .clear
@@ -139,12 +140,10 @@ class MessageCell: UICollectionViewCell {
         if isTrailing {
             NSLayoutConstraint.activate(trailingConstraints)
             NSLayoutConstraint.deactivate(leadingConstraints)
-            
         } else {
             NSLayoutConstraint.activate(leadingConstraints)
             NSLayoutConstraint.deactivate(trailingConstraints)
         }
-        
     }
     
     private func setupLabelConstant() {
@@ -178,7 +177,6 @@ extension MessageCell {
             static let leadingAnchor: CGFloat = 8
             static let lightMode = UIColor(hex: "F1F1F1")
             static let darkMode = UIColor(hex: "DAC2FF")
-            
         }
         enum TextDate {
             static let fontSize: CGFloat = 12

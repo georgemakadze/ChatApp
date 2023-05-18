@@ -1,5 +1,5 @@
 //
-//  ChatViewController.swift
+//  ConversationViewController.swift
 //  ChatApp
 //
 //  Created by Giorgi Makadze on 18.04.2023.
@@ -7,17 +7,17 @@
 
 import UIKit
 
-class ChatViewController: UIViewController {
+class ConversationViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let chatViewModel: ChatViewModel
-    private let topMessageView: MessageView
-    private let bottomMessageView: MessageView
+    private let conversationViewModel: ConversationViewModel
+    private let topMessageView: ChatView
+    private let bottomMessageView: ChatView
     
     private lazy var modeButtonView: ModeButtonView = {
         let modeButtonView = ModeButtonView()
-        modeButtonView.addTarget(self, action: #selector(makeSwitchMode), for: .touchUpInside)
+        modeButtonView.addTarget(self, action: #selector(toggleSwitchMode), for: .touchUpInside)
         modeButtonView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(modeButtonView)
         return modeButtonView
@@ -45,10 +45,10 @@ class ChatViewController: UIViewController {
     
     // MARK: - Initilizers
     
-    init(with viewModel: ChatViewModel) {
-        chatViewModel = viewModel
-        topMessageView = MessageView(currentUserId: viewModel.topUserID)
-        bottomMessageView = MessageView(currentUserId: viewModel.bottomUserID)
+    init(with viewModel: ConversationViewModel) {
+        conversationViewModel = viewModel
+        topMessageView = ChatView(viewModel: viewModel.topViewModel)
+        bottomMessageView = ChatView(viewModel: viewModel.bottomViewModel)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -61,8 +61,8 @@ class ChatViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        topMessageView.configure(messages: chatViewModel.allMessages)
-        bottomMessageView.configure(messages: chatViewModel.allMessages)
+        topMessageView.configure(viewModel: conversationViewModel.topViewModel)
+        bottomMessageView.configure(viewModel: conversationViewModel.bottomViewModel)
     }
     
     override func viewDidLoad() {
@@ -106,7 +106,6 @@ class ChatViewController: UIViewController {
         topMessageView.setupView()
         bottomMessageView.setupView()
         
-        
         topMessageView.delegate = self
         bottomMessageView.delegate = self
     }
@@ -121,7 +120,7 @@ class ChatViewController: UIViewController {
     
     // MARK: - Dark and Light mode logic
     
-    @objc private func makeSwitchMode() {
+    @objc private func toggleSwitchMode() {
         isDarkMode.toggle()
         setupMode(isDark: isDarkMode)
     }
@@ -129,22 +128,17 @@ class ChatViewController: UIViewController {
 
 // MARK: - MessageViewDelegate
 
-extension ChatViewController: MessageViewDelegate {
-    func didSendMessage(messageView: MessageView, text: String, date: Date) {
-        if messageView == topMessageView {
-            chatViewModel.sendMessage(text: text, date: date, userID: chatViewModel.topUserID)
-        } else if messageView == bottomMessageView {
-            chatViewModel.sendMessage(text: text, date: date, userID: chatViewModel.bottomUserID)
-        }
-        
-        topMessageView.configure(messages: chatViewModel.allMessages)
-        bottomMessageView.configure(messages: chatViewModel.allMessages)
+extension ConversationViewController: ChatViewDelegate {
+    func didSendMessage(chatView: ChatView, text: String, date: Date, userID: Int) {
+        conversationViewModel.sendMessage(text: text, date: date, userID: userID)
+        topMessageView.configure(viewModel: conversationViewModel.topViewModel)
+        bottomMessageView.configure(viewModel: conversationViewModel.bottomViewModel)
     }
 }
 
 // MARK: - Constants
 
-extension ChatViewController {
+extension ConversationViewController {
     enum Constants {
         static let separatorHeightAnchor: CGFloat = 6
         static let viewBackgroundColor = UIColor(hex: "160039")

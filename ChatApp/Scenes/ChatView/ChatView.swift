@@ -1,5 +1,5 @@
 //
-//  MessageView.swift
+//  ChatView.swift
 //  ChatApp
 //
 //  Created by Giorgi Makadze on 19.04.2023.
@@ -8,23 +8,23 @@
 import Foundation
 import UIKit
 
-protocol MessageViewDelegate: AnyObject {
-    func didSendMessage(messageView: MessageView, text: String, date: Date)
+protocol ChatViewDelegate: AnyObject {
+    func didSendMessage(chatView: ChatView, text: String, date: Date, userID: Int)
 }
 
-class MessageView: UIView {
+class ChatView: UIView {
     
     // MARK: - Properties
     
     private lazy var messageInputView = InputView()
+    private let viewModel: ChatViewModel
     private var collectionView: UICollectionView!
     private var dataSource: UICollectionViewDiffableDataSource<Section, Message>!
-    weak var delegate: MessageViewDelegate?
+    weak var delegate: ChatViewDelegate?
     private var isDarkMode = false
-    private let currentUserId: Int
     
-    init(currentUserId: Int) {
-        self.currentUserId = currentUserId
+    init(viewModel: ChatViewModel) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
     }
     
@@ -43,10 +43,10 @@ class MessageView: UIView {
         messageInputView.delegate = self
     }
     
-    func configure(messages: [Message]) {
+    func configure(viewModel: ChatViewModel) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(messages,  toSection: .main)
+        snapshot.appendItems(viewModel.messages,  toSection: .main)
         dataSource.apply(snapshot, animatingDifferences: true, completion: { [weak self] in
             guard let self = self else { return }
             let lastItemIndex = self.collectionView.numberOfItems(inSection: 0) - 1
@@ -69,7 +69,7 @@ class MessageView: UIView {
         setupCollectionViewConstraints()
         
         let cellRegistration = UICollectionView.CellRegistration<MessageCell, Message> { [self] (cell, indexPath, item) in
-            cell.configure(with: item, currentUserId: currentUserId)
+            cell.configure(with: item, isCurrentUser: viewModel.isCurrentSender(messageSenderUserID: item.userID))
             cell.setAppearance(isDark: isDarkMode)
         }
         
@@ -115,15 +115,15 @@ class MessageView: UIView {
     }
 }
 
-extension MessageView: InputViewDelegate {
+extension ChatView: InputViewDelegate {
     func didTapSendButton(inputView: InputView, text: String, date: Date) {
-        delegate?.didSendMessage(messageView: self, text: text, date: Date())
+        delegate?.didSendMessage(chatView: self, text: text, date: Date(), userID: viewModel.userID)
     }
 }
 
 // MARK: - Constants
 
-extension MessageView {
+extension ChatView {
     enum Constants {
         enum CollectionView {
             static let padding: CGFloat = 16
