@@ -16,10 +16,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        let chatViewModel = ConversationViewModel()
+        let coreDataManager = CoreDataManager(name: "CoreData")
+        let chatViewModel = ConversationViewModel(coreDataManager: coreDataManager)
         let viewController = ConversationViewController(with: chatViewModel)
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

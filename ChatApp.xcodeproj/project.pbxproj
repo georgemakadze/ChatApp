@@ -21,6 +21,9 @@
 		0E52E3C229F0091700845294 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52E3C129F0091700845294 /* ChatView.swift */; };
 		0E52E3C429F2890800845294 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52E3C329F2890800845294 /* MessageCell.swift */; };
 		0E52E3C729F6D44C00845294 /* UIColor+Extantions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E52E3C629F6D44C00845294 /* UIColor+Extantions.swift */; };
+		0EDD086E2A164BBF00FF282B /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0EDD086C2A164BBF00FF282B /* CoreData.xcdatamodeld */; };
+		0EDD08742A16854F00FF282B /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDD08732A16854F00FF282B /* CoreData.swift */; };
+		0EDD08762A16856E00FF282B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDD08752A16856E00FF282B /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +43,9 @@
 		0E52E3C129F0091700845294 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		0E52E3C329F2890800845294 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		0E52E3C629F6D44C00845294 /* UIColor+Extantions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extantions.swift"; sourceTree = "<group>"; };
+		0EDD086D2A164BBF00FF282B /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
+		0EDD08732A16854F00FF282B /* CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
+		0EDD08752A16856E00FF282B /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +114,7 @@
 		0E52E3A529EEF2C800845294 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				0EDD086B2A164B9E00FF282B /* CoreData */,
 				0E40B2D42A161E9A00BBAB6D /* Models */,
 				0E52E3C529F6D41500845294 /* Extantions */,
 				0E52E3BA29EFE09100845294 /* Scenes */,
@@ -137,6 +144,16 @@
 				0E40B2CA2A0E72BA00BBAB6D /* Date+Extantions.swift */,
 			);
 			path = Extantions;
+			sourceTree = "<group>";
+		};
+		0EDD086B2A164B9E00FF282B /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				0EDD08732A16854F00FF282B /* CoreData.swift */,
+				0EDD08752A16856E00FF282B /* CoreDataManager.swift */,
+				0EDD086C2A164BBF00FF282B /* CoreData.xcdatamodeld */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,9 +226,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EDD08742A16854F00FF282B /* CoreData.swift in Sources */,
 				0E52E3C729F6D44C00845294 /* UIColor+Extantions.swift in Sources */,
+				0EDD08762A16856E00FF282B /* CoreDataManager.swift in Sources */,
 				0E433D4C29FCF74300512F87 /* Message.swift in Sources */,
 				0E40B2DA2A162BC500BBAB6D /* ConversationViewController.swift in Sources */,
+				0EDD086E2A164BBF00FF282B /* CoreData.xcdatamodeld in Sources */,
 				0E40B2CB2A0E72BA00BBAB6D /* Date+Extantions.swift in Sources */,
 				0E40B2C92A04FDA800BBAB6D /* ModeButton.swift in Sources */,
 				0E433D4A29FCF0AD00512F87 /* ConversationViewModel.swift in Sources */,
@@ -428,6 +448,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0EDD086C2A164BBF00FF282B /* CoreData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0EDD086D2A164BBF00FF282B /* CoreData.xcdatamodel */,
+			);
+			currentVersion = 0EDD086D2A164BBF00FF282B /* CoreData.xcdatamodel */;
+			path = CoreData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0E52E39B29EEF2C800845294 /* Project object */;
 }

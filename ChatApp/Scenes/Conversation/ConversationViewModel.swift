@@ -6,31 +6,57 @@
 //
 
 import Foundation
-import UIKit
+import CoreData
 
 class ConversationViewModel {
+    private let coreDataManager: CoreDataManager
     private(set) var topViewModel: ChatViewModel
     private(set) var bottomViewModel: ChatViewModel
     
-    init() {
+    init(coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         let firstUserID = 1
         let secondUserID = 2
         
-        let fakeMessages: [Message] = [
-            Message(text: "Hello, how are you?", date: Date(), userID: firstUserID),
-            Message(text: "I'm doing well, thanks. How about you?", date: Date(), userID: secondUserID),
-            Message(text: "I'm good, thanks!", date: Date(), userID: firstUserID),
-            Message(text: "Okay bye", date: Date(), userID: secondUserID),
-        ]
-        topViewModel = ChatViewModel(userID: firstUserID, messages: fakeMessages)
-        bottomViewModel = ChatViewModel(userID: secondUserID, messages: fakeMessages)
+        topViewModel = ChatViewModel(userID: firstUserID, messages: [])
+        bottomViewModel = ChatViewModel(userID: secondUserID, messages: [])
+        
+        let fetchedMessages = fetchMessages()
+        
+        topViewModel.messages += fetchedMessages
+        bottomViewModel.messages += fetchedMessages
     }
     
     func sendMessage(text: String, date: Date, userID: Int) {
         let message = Message(text: text, date: Date(), userID: userID)
         topViewModel.addMessage(message: message)
         bottomViewModel.addMessage(message: message)
+        saveMessage(message: message)
     }
     
+    func saveMessage(message: Message) {
+        let newObject: MessageEntity = coreDataManager.createObject(entityName: "MessageEntity")
+        newObject.text = message.text
+        newObject.userID = Int64(message.userID)
+        newObject.date = message.date
+        coreDataManager.saveContext()
+    }
     
+    func fetchMessages() -> [Message] {
+        var messageArray: [Message] = []
+        do {
+            let fetchedObjects: [MessageEntity] = try coreDataManager.fetchObjects(entityName: "MessageEntity")
+            for object in fetchedObjects {
+                let text = object.text ?? ""
+                let date = object.date ?? Date()
+                let userID = object.userID
+                let message = Message(text: text, date: date, userID: Int(userID))
+                messageArray.append(message)
+            }
+        } catch {
+            print("Failed to fetch objects: \(error)")
+        }
+        return messageArray
+    }
 }
+
