@@ -66,10 +66,16 @@ class MessageCell: UICollectionViewCell {
     
     func configure(with item: Message, isCurrentUser: Bool) {
         label.text = item.text
-        textDate.text = item.date.formatDAte()
         setBubblePosition(isTrailing: isCurrentUser)
+        
+        if item.hasFailed == true {
+            textDate.text = "არ გაიგზავნა"
+            textDate.textColor = .red
+        } else {
+            textDate.textColor = Constants.TextDate.textColor
+            textDate.text = item.date.formatDAte()
+        }
     }
-    
     
     private func setup() {
         contentView.backgroundColor = .clear

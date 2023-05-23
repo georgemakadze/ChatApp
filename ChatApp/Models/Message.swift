@@ -12,4 +12,5 @@ struct Message: Hashable {
     let text: String
     let date: Date
     let userID: Int
+    let hasFailed: Bool
 }

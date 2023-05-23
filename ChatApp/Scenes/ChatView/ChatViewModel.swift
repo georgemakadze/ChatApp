@@ -9,6 +9,7 @@ import Foundation
 
 struct ChatViewModel {
     let userID: Int
+//    let hasFailed: Bool
     var messages: [Message]
     
     mutating func addMessage(message: Message) {

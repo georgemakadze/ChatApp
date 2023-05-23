@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import SystemConfiguration
 
 class ConversationViewModel {
     private let coreDataManager: CoreDataManager
@@ -28,7 +29,9 @@ class ConversationViewModel {
     }
     
     func sendMessage(text: String, date: Date, userID: Int) {
-        let message = Message(text: text, date: Date(), userID: userID)
+        let isConnected = Reachability.isConnectedToNetwork()
+           let hasFailed = !isConnected
+        let message = Message(text: text, date: Date(), userID: userID, hasFailed: hasFailed)
         topViewModel.addMessage(message: message)
         bottomViewModel.addMessage(message: message)
         saveMessage(message: message)
@@ -39,6 +42,7 @@ class ConversationViewModel {
         newObject.text = message.text
         newObject.userID = Int64(message.userID)
         newObject.date = message.date
+        newObject.hasFailed = message.hasFailed
         coreDataManager.saveContext()
     }
     
@@ -50,7 +54,8 @@ class ConversationViewModel {
                 let text = object.text ?? ""
                 let date = object.date ?? Date()
                 let userID = object.userID
-                let message = Message(text: text, date: date, userID: Int(userID))
+                let hasFailed = object.hasFailed
+                let message = Message(text: text, date: date, userID: Int(userID), hasFailed: hasFailed)
                 messageArray.append(message)
             }
         } catch {
