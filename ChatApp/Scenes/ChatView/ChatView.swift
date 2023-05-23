@@ -64,6 +64,7 @@ class ChatView: UIView {
         let listLayout = UICollectionViewCompositionalLayout.list(using: layoutConfig)
         collectionView = UICollectionView(frame: bounds, collectionViewLayout: listLayout)
         collectionView.backgroundColor = .clear
+        collectionView.keyboardDismissMode = .onDrag
         self.addSubview(collectionView)
         
         setupCollectionViewConstraints()
