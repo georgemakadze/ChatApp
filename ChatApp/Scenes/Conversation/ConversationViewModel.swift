@@ -30,7 +30,7 @@ class ConversationViewModel {
     
     func sendMessage(text: String, date: Date, userID: Int) {
         let isConnected = Reachability.isConnectedToNetwork()
-           let hasFailed = !isConnected
+        let hasFailed = !isConnected
         let message = Message(text: text, date: Date(), userID: userID, hasFailed: hasFailed)
         topViewModel.addMessage(message: message)
         bottomViewModel.addMessage(message: message)

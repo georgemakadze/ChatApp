@@ -116,6 +116,7 @@
 		0E52E3A529EEF2C800845294 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				0EDD087B2A1CC92C00FF282B /* Reachability */,
 				0EDD086B2A164B9E00FF282B /* CoreData */,
 				0E40B2D42A161E9A00BBAB6D /* Models */,
 				0E52E3C529F6D41500845294 /* Extantions */,
@@ -125,7 +126,6 @@
 				0E52E3AF29EEF2CA00845294 /* Assets.xcassets */,
 				0E52E3B129EEF2CA00845294 /* LaunchScreen.storyboard */,
 				0E52E3B429EEF2CA00845294 /* Info.plist */,
-				0EDD08792A1B58D800FF282B /* Reachability.swift */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -157,6 +157,14 @@
 				0EDD086C2A164BBF00FF282B /* CoreData.xcdatamodeld */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		0EDD087B2A1CC92C00FF282B /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				0EDD08792A1B58D800FF282B /* Reachability.swift */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

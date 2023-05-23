@@ -38,7 +38,7 @@ class MessageCell: UICollectionViewCell {
     private lazy var largeBubble: UIView = {
         let largeBubble = UIView()
         largeBubble.backgroundColor = Constants.Container.lightMode
-        largeBubble.layer.cornerRadius = 8
+        largeBubble.layer.cornerRadius = Constants.LargeBubble.radius
         largeBubble.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(largeBubble)
         return largeBubble
@@ -51,6 +51,14 @@ class MessageCell: UICollectionViewCell {
         textDate.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(textDate)
         return textDate
+    }()
+    
+    private lazy var smallBubble: UIView = {
+        let smallBubble = UIView()
+        smallBubble.backgroundColor = Constants.Container.lightMode
+        smallBubble.layer.cornerRadius = Constants.SmallBubble.radius
+        contentView.addSubview(smallBubble)
+        return smallBubble
     }()
     
     // MARK: - Initializers
@@ -67,9 +75,8 @@ class MessageCell: UICollectionViewCell {
     func configure(with item: Message, isCurrentUser: Bool) {
         label.text = item.text
         setBubblePosition(isTrailing: isCurrentUser)
-        
         if item.hasFailed == true {
-            textDate.text = "არ გაიგზავნა"
+            textDate.text = Constants.TextDate.text
             textDate.textColor = .red
         } else {
             textDate.textColor = Constants.TextDate.textColor
@@ -79,68 +86,54 @@ class MessageCell: UICollectionViewCell {
     
     private func setup() {
         contentView.backgroundColor = .clear
+        setupSmallBubbleConstants()
+        setupLargeBubbleConstraints()
         setupContainerViewConstraints()
         setupLabelConstant()
         setupTextDateConstant()
-        setupLargeBubbleConstraints()
-        
-        //        makeMinBubble()
-        //        setupMinBubbleConstants()
     }
     
     func setAppearance(isDark: Bool) {
         containerView.backgroundColor = isDark ? Constants.Container.darkMode : Constants.Container.lightMode
         largeBubble.backgroundColor = isDark ? Constants.LargeBubble.darkMode : Constants.LargeBubble.lightMode
+        smallBubble.backgroundColor = isDark ? Constants.LargeBubble.darkMode : Constants.LargeBubble.lightMode
     }
-    
-    // MARK: - Make View
-    
-    //    func makeMinBubble () {
-    //        largeBubble.backgroundColor = .blue
-    //        largeBubble.layer.cornerRadius = 8
-    //        contentView.addSubview(largeBubble)
-    //    }
     
     // MARK: - Constraints
     
     private func setupContainerViewConstraints() {
         containerView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        leadingConstraints = [
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Container.leadingAnchor),
+        containerView.bottomAnchor.constraint(equalTo: largeBubble.topAnchor, constant: Constants.Container.bottomAnchor).isActive = true
+        leadingConstraints.append(contentsOf: [
+            containerView.leadingAnchor.constraint(equalTo: largeBubble.trailingAnchor, constant: Constants.Container.leadingAnchor),
             containerView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: (-Constants.Container.trailingAnchor))
-        ]
-        trailingConstraints = [
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Container.leadingAnchor),
+        ])
+        trailingConstraints.append(contentsOf: [
+            containerView.trailingAnchor.constraint(equalTo: largeBubble.leadingAnchor, constant: -Constants.Container.leadingAnchor),
             containerView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: (Constants.Container.trailingAnchor))
-        ]
+        ])
     }
     
     func setupLargeBubbleConstraints() {
         NSLayoutConstraint.activate([
-            largeBubble.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: Constants.LargeBubble.bottomAnchor),
+            largeBubble.bottomAnchor.constraint(equalTo: smallBubble.topAnchor, constant: Constants.LargeBubble.bottomAnchor),
             largeBubble.widthAnchor.constraint(equalToConstant: Constants.LargeBubble.widthAnchor),
             largeBubble.heightAnchor.constraint(equalToConstant: Constants.LargeBubble.heightAnchor)
         ])
-        leadingConstraints.append(largeBubble.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.LargeBubble.leadingAnchor))
-        trailingConstraints.append(largeBubble.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: Constants.LargeBubble.trailingAnchor))
+        leadingConstraints.append(largeBubble.leadingAnchor.constraint(equalTo: smallBubble.trailingAnchor, constant: Constants.LargeBubble.leadingAnchor))
+        trailingConstraints.append(largeBubble.trailingAnchor.constraint(equalTo: smallBubble.leadingAnchor, constant: Constants.LargeBubble.trailingAnchor))
     }
     
-    //    func setupMinBubbleConstants() {
-    //        smallBubble.translatesAutoresizingMaskIntoConstraints = false
-    //        NSLayoutConstraint.activate([
-    //
-    //            smallBubble.widthAnchor.constraint(equalToConstant: 20),
-    //            smallBubble.heightAnchor.constraint(equalToConstant: 20),
-    //            smallBubble.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-    //
-    //        ])
-    //
-    //        leadingConstraints.append(smallBubble.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 2))
-    //        leadingConstraints.append(smallBubble.trailingAnchor.constraint(equalTo: largeBubble.leadingAnchor, constant: -2))
-    //
-    //        trailingConstraints.append(smallBubble.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2))
-    //        trailingConstraints.append(smallBubble.leadingAnchor.constraint(equalTo: largeBubble.trailingAnchor, constant: 2))
-    //    }
+    func setupSmallBubbleConstants() {
+        smallBubble.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            smallBubble.widthAnchor.constraint(equalToConstant: Constants.SmallBubble.widthAnchor),
+            smallBubble.heightAnchor.constraint(equalToConstant: Constants.SmallBubble.heightAnchor),
+            //smallBubble.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+        leadingConstraints.append(smallBubble.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.SmallBubble.leadingAnchor))
+        trailingConstraints.append(smallBubble.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: Constants.SmallBubble.trailingAnchor))
+    }
     
     private func setBubblePosition(isTrailing: Bool) {
         if isTrailing {
@@ -163,7 +156,7 @@ class MessageCell: UICollectionViewCell {
     
     private func setupTextDateConstant() {
         NSLayoutConstraint.activate([
-            textDate.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: (Constants.TextDate.topAnchor)),
+            textDate.topAnchor.constraint(equalTo: smallBubble.bottomAnchor, constant: (Constants.TextDate.topAnchor)),
             textDate.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: (Constants.TextDate.bottomAnchor))
         ])
         
@@ -180,7 +173,8 @@ extension MessageCell {
         enum Container {
             static let trailingAnchor: CGFloat = 16
             static let radius: CGFloat = 25
-            static let leadingAnchor: CGFloat = 8
+            static let leadingAnchor: CGFloat = -14
+            static let bottomAnchor: CGFloat = 16
             static let lightMode = UIColor(hex: "F1F1F1")
             static let darkMode = UIColor(hex: "DAC2FF")
         }
@@ -189,6 +183,7 @@ extension MessageCell {
             static let topAnchor: CGFloat = 4
             static let leadingAnchor: CGFloat = 8
             static let bottomAnchor: CGFloat = -16
+            static let text = "არ გაიგზავნა"
             static let textColor = UIColor(hex: "C7C7C7")
         }
         enum Label {
@@ -204,8 +199,16 @@ extension MessageCell {
             static let heightAnchor: CGFloat = 16
             static let leadingAnchor: CGFloat = -1
             static let trailingAnchor: CGFloat = 1
+            static let radius: CGFloat = 8
             static let lightMode = UIColor(hex: "F1F1F1")
             static let darkMode = UIColor(hex: "DAC2FF")
+        }
+        enum SmallBubble {
+            static let radius: CGFloat = 6
+            static let widthAnchor: CGFloat = 12
+            static let heightAnchor: CGFloat = 12
+            static let leadingAnchor: CGFloat = 2
+            static let trailingAnchor: CGFloat = -2
         }
     }
 }
