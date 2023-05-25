@@ -20,7 +20,7 @@ class InputView: UIView {
         let textView = UITextView()
         textView.backgroundColor = .clear
         textView.textAlignment = .left
-        textView.textColor = Constants.TextView.textColor
+        //        textView.textColor = Constants.TextView.textColor
         textView.font = .systemFont(ofSize:(Constants.TextView.fontSize))
         textView.text = Constants.TextView.text
         textView.delegate = self
@@ -48,6 +48,8 @@ class InputView: UIView {
         return button
     }()
     
+    var isDark = false
+    
     private var textViewHeightConstraint: NSLayoutConstraint!
     
     weak var delegate: InputViewDelegate?
@@ -68,6 +70,7 @@ class InputView: UIView {
         setupContainerViewConstraints()
         setupTextViewConstraints()
         setupButtonConstraints()
+        textView.textColor = Constants.TextView.textColor
     }
     
     private func setupContainerViewConstraints() {
@@ -103,13 +106,19 @@ class InputView: UIView {
         if let message = textView.text {
             delegate?.didTapSendButton(inputView: self, text: message, date: Date())
             textView.text = ""
+            textView.textColor = isDark ? .white : Constants.TextView.textColor
         }
     }
     
     func setAppearance(isDark: Bool) {
         backgroundColor = isDark ? Constants.backgroundColor : .white
         containerView.backgroundColor = isDark ?  Constants.ContainerView.darkCBackgroundColor : .white
-        textView.textColor = isDark ?  .white : .black
+        //        textView.textColor = isDark ?  .white : .black
+        if textView.text == Constants.TextView.text {
+            textView.textColor = isDark ? .white : Constants.TextView.textColor
+        } else {
+            textView.textColor = isDark ? .white : .black
+        }
     }
 }
 
@@ -123,6 +132,7 @@ extension InputView: UITextViewDelegate {
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         if textView.text == Constants.TextView.text {
             textView.text = ""
+            textView.textColor = isDark ? .white : .black
         }
         return true
     }
@@ -135,7 +145,7 @@ extension InputView {
             static let bottomAnchor: CGFloat = -8
             static let heightAnchor: CGFloat = 36
             static let topAnchor: CGFloat = 8
-            static let fontSize: CGFloat = 16
+            static let fontSize: CGFloat = 14
             static let textColor = UIColor(hex: "C7C7C7")
             static let text = "დაწერეთ შეტყობინება..."
             static let defaultHeight: CGFloat = 100

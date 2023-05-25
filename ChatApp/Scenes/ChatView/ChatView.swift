@@ -23,6 +23,7 @@ class ChatView: UIView {
     weak var delegate: ChatViewDelegate?
     private var isDarkMode = false
     
+    
     init(viewModel: ChatViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -71,7 +72,6 @@ class ChatView: UIView {
         
         let cellRegistration = UICollectionView.CellRegistration<MessageCell, Message> { [self] (cell, indexPath, item) in
             cell.configure(with: item, isCurrentUser: viewModel.isCurrentSender(messageSenderUserID: item.userID))
-            cell.setAppearance(isDark: isDarkMode)
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, Message>(collectionView: collectionView) {

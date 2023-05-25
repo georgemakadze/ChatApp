@@ -43,7 +43,7 @@ class MessageCell: UICollectionViewCell {
         contentView.addSubview(largeBubble)
         return largeBubble
     }()
-    //private lazy var smallBubble = UIView()
+
     private lazy var textDate: UILabel = {
         let textDate = UILabel()
         textDate.textColor = Constants.TextDate.textColor
@@ -75,7 +75,7 @@ class MessageCell: UICollectionViewCell {
     func configure(with item: Message, isCurrentUser: Bool) {
         label.text = item.text
         setBubblePosition(isTrailing: isCurrentUser)
-        if item.hasFailed == true {
+        if item.hasFailed {
             textDate.text = Constants.TextDate.text
             textDate.textColor = .red
         } else {
@@ -91,12 +91,6 @@ class MessageCell: UICollectionViewCell {
         setupContainerViewConstraints()
         setupLabelConstant()
         setupTextDateConstant()
-    }
-    
-    func setAppearance(isDark: Bool) {
-        containerView.backgroundColor = isDark ? Constants.Container.darkMode : Constants.Container.lightMode
-        largeBubble.backgroundColor = isDark ? Constants.LargeBubble.darkMode : Constants.LargeBubble.lightMode
-        smallBubble.backgroundColor = isDark ? Constants.LargeBubble.darkMode : Constants.LargeBubble.lightMode
     }
     
     // MARK: - Constraints
@@ -139,9 +133,15 @@ class MessageCell: UICollectionViewCell {
         if isTrailing {
             NSLayoutConstraint.activate(trailingConstraints)
             NSLayoutConstraint.deactivate(leadingConstraints)
+            containerView.backgroundColor = Constants.Container.darkMode
+            largeBubble.backgroundColor = Constants.LargeBubble.darkMode
+            smallBubble.backgroundColor = Constants.LargeBubble.darkMode
         } else {
             NSLayoutConstraint.activate(leadingConstraints)
             NSLayoutConstraint.deactivate(trailingConstraints)
+            containerView.backgroundColor = Constants.Container.lightMode
+            largeBubble.backgroundColor = Constants.LargeBubble.lightMode
+            smallBubble.backgroundColor = Constants.LargeBubble.lightMode
         }
     }
     

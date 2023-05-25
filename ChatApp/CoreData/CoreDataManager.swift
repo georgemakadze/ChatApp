@@ -10,7 +10,12 @@ import CoreData
 
 class CoreDataManager: CoreData {
     
-    func fetchObjects<Entity: NSManagedObject>(entityName: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) throws -> [Entity] {
+    
+    func fetchObjects<Entity: NSManagedObject>(
+        entityName: String,
+        predicate: NSPredicate? = nil,
+        sortDescriptors: [NSSortDescriptor]? = nil
+    ) throws -> [Entity] {
         let fetchRequest = NSFetchRequest<Entity>(entityName: entityName)
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = sortDescriptors
