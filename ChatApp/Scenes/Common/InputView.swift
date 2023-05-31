@@ -133,10 +133,10 @@ extension InputView: UITextViewDelegate {
     }
     
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        delegate?.didStartTyping(inputView: self)
         if textView.text == Constants.TextView.text {
             textView.text = ""
             textView.textColor = isDark ? .white : .black
-            delegate?.didStartTyping(inputView: self)
         }
         return true
     }
