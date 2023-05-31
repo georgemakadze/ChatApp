@@ -19,13 +19,33 @@ class ConversationViewModel {
         let firstUserID = 1
         let secondUserID = 2
         
-        topViewModel = ChatViewModel(userID: firstUserID, messages: [])
-        bottomViewModel = ChatViewModel(userID: secondUserID, messages: [])
+        topViewModel = ChatViewModel(userID: firstUserID, chatItems: [])
+        bottomViewModel = ChatViewModel(userID: secondUserID, chatItems: [])
         
         let fetchedMessages = fetchMessages()
         
-        topViewModel.messages += fetchedMessages
-        bottomViewModel.messages += fetchedMessages
+        topViewModel.chatItems += fetchedMessages.map { ChatItem.message($0) }
+        bottomViewModel.chatItems += fetchedMessages.map { ChatItem.message($0) }
+    }
+    
+    func startTyping(userId: Int) {
+        if userId == topViewModel.userID {
+            bottomViewModel.chatItems.append(.loading)
+            print("ios - topview Start")
+        } else if userId == bottomViewModel.userID {
+            topViewModel.chatItems.append(.loading)
+            print("ios-bottomview Start")
+        }
+    }
+    
+    func stopTyping(userId: Int) {
+        if userId == topViewModel.userID {
+            bottomViewModel.chatItems.removeAll(where: { $0 == .loading })
+            print("ios - topview Stop")
+        } else if userId == bottomViewModel.userID {
+            topViewModel.chatItems.removeAll(where: { $0 == .loading })
+            print("ios-bottomview Stop")
+        }
     }
     
     func sendMessage(text: String, date: Date, userID: Int) {

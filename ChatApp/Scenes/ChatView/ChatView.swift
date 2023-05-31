@@ -10,6 +10,8 @@ import UIKit
 
 protocol ChatViewDelegate: AnyObject {
     func didSendMessage(chatView: ChatView, text: String, date: Date, userID: Int)
+    func didStartTyping(chatView: ChatView, userId: Int)
+    func didStopTyping(chatView: ChatView, userId: Int)
 }
 
 class ChatView: UIView {
@@ -19,10 +21,9 @@ class ChatView: UIView {
     private lazy var messageInputView = InputView()
     private let viewModel: ChatViewModel
     private var collectionView: UICollectionView!
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Message>!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, ChatItem>!
     weak var delegate: ChatViewDelegate?
     private var isDarkMode = false
-    
     
     init(viewModel: ChatViewModel) {
         self.viewModel = viewModel
@@ -45,9 +46,17 @@ class ChatView: UIView {
     }
     
     func configure(viewModel: ChatViewModel) {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Message>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, ChatItem>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(viewModel.messages,  toSection: .main)
+        snapshot.appendItems(viewModel.chatItems,  toSection: .main)
+        //        let messages = viewModel.chatItem.compactMap { chatItem -> Message? in
+        //               if case let .message(message) = chatItem {
+        //                   return message
+        //               }
+        //               return nil
+        //           }
+        //        snapshot.appendItems(messages, toSection: .main)
+        print(viewModel.chatItems)
         dataSource.apply(snapshot, animatingDifferences: true, completion: { [weak self] in
             guard let self = self else { return }
             let lastItemIndex = self.collectionView.numberOfItems(inSection: 0) - 1
@@ -74,15 +83,41 @@ class ChatView: UIView {
             cell.configure(with: item, isCurrentUser: viewModel.isCurrentSender(messageSenderUserID: item.userID))
         }
         
-        dataSource = UICollectionViewDiffableDataSource<Section, Message>(collectionView: collectionView) {
-            (collectionView: UICollectionView, indexPath: IndexPath, identifier: Message) -> UICollectionViewCell? in
+        let loadingCellRegistration = UICollectionView.CellRegistration<LoadingCell, Any> { (cell, indexPath, item) in
             
-            let cell = collectionView.dequeueConfiguredReusableCell(
-                using: cellRegistration,
-                for: indexPath,
-                item: identifier
-            )
-            return cell
+        }
+        
+        dataSource = UICollectionViewDiffableDataSource<Section, ChatItem>(collectionView: collectionView) {
+            (collectionView: UICollectionView, indexPath: IndexPath, item: ChatItem) -> UICollectionViewCell? in
+            
+            switch item {
+            case .message(let message):
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: cellRegistration,
+                    for: indexPath,
+                    item: message
+                )
+            case .loading:
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: loadingCellRegistration,
+                    for: indexPath,
+                    item: ()
+                )
+            }
+            
+            //            let cell = collectionView.dequeueConfiguredReusableCell(
+            //                using: cellRegistration,
+            //                for: indexPath,
+            //                item: identifier
+            //            )
+            //            return cell
+            
+            //            if let message = item as? Message {
+            //                        return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: message)
+            //                    } else if let loadingItem = item as? LoadingItem {
+            //                        return collectionView.dequeueConfiguredReusableCell(using: loadingCellRegistration, for: indexPath, item: loadingItem)
+            //                    }
+            //                    return nil
         }
     }
     
@@ -119,6 +154,14 @@ class ChatView: UIView {
 extension ChatView: InputViewDelegate {
     func didTapSendButton(inputView: InputView, text: String, date: Date) {
         delegate?.didSendMessage(chatView: self, text: text, date: Date(), userID: viewModel.userID)
+    }
+    
+    func didStartTyping(inputView: InputView) {
+        delegate?.didStartTyping(chatView: self, userId: viewModel.userID)
+    }
+    
+    func didStopTyping(inputView: InputView) {
+        delegate?.didStopTyping(chatView: self, userId: viewModel.userID)
     }
 }
 

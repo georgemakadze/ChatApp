@@ -10,6 +10,8 @@ import UIKit
 
 protocol InputViewDelegate: AnyObject {
     func didTapSendButton(inputView: InputView, text: String, date: Date)
+    func didStartTyping(inputView: InputView)
+    func didStopTyping(inputView: InputView)
 }
 
 class InputView: UIView {
@@ -71,6 +73,7 @@ class InputView: UIView {
         setupTextViewConstraints()
         setupButtonConstraints()
         textView.textColor = Constants.TextView.textColor
+        textView.delegate = self
     }
     
     private func setupContainerViewConstraints() {
@@ -133,8 +136,13 @@ extension InputView: UITextViewDelegate {
         if textView.text == Constants.TextView.text {
             textView.text = ""
             textView.textColor = isDark ? .white : .black
+            delegate?.didStartTyping(inputView: self)
         }
         return true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        delegate?.didStopTyping(inputView: self)
     }
 }
 

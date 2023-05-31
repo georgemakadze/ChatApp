@@ -43,7 +43,7 @@ class MessageCell: UICollectionViewCell {
         contentView.addSubview(largeBubble)
         return largeBubble
     }()
-
+    
     private lazy var textDate: UILabel = {
         let textDate = UILabel()
         textDate.textColor = Constants.TextDate.textColor
@@ -57,6 +57,7 @@ class MessageCell: UICollectionViewCell {
         let smallBubble = UIView()
         smallBubble.backgroundColor = Constants.Container.lightMode
         smallBubble.layer.cornerRadius = Constants.SmallBubble.radius
+        smallBubble.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(smallBubble)
         return smallBubble
     }()
@@ -119,11 +120,9 @@ class MessageCell: UICollectionViewCell {
     }
     
     func setupSmallBubbleConstants() {
-        smallBubble.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             smallBubble.widthAnchor.constraint(equalToConstant: Constants.SmallBubble.widthAnchor),
             smallBubble.heightAnchor.constraint(equalToConstant: Constants.SmallBubble.heightAnchor),
-            //smallBubble.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         leadingConstraints.append(smallBubble.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.SmallBubble.leadingAnchor))
         trailingConstraints.append(smallBubble.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: Constants.SmallBubble.trailingAnchor))

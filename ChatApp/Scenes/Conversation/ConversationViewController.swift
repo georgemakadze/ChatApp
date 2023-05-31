@@ -131,6 +131,22 @@ class ConversationViewController: UIViewController {
 extension ConversationViewController: ChatViewDelegate {
     func didSendMessage(chatView: ChatView, text: String, date: Date, userID: Int) {
         conversationViewModel.sendMessage(text: text, date: date, userID: userID)
+//        topMessageView.configure(viewModel: conversationViewModel.topViewModel)
+//        bottomMessageView.configure(viewModel: conversationViewModel.bottomViewModel)
+        refreshChatViews()
+    }
+    
+    func didStartTyping(chatView: ChatView, userId: Int) {
+        conversationViewModel.startTyping(userId: userId)
+        refreshChatViews()
+    }
+    
+    func didStopTyping(chatView: ChatView, userId: Int) {
+        conversationViewModel.stopTyping(userId: userId)
+        refreshChatViews()
+    }
+    
+    private func refreshChatViews() {
         topMessageView.configure(viewModel: conversationViewModel.topViewModel)
         bottomMessageView.configure(viewModel: conversationViewModel.bottomViewModel)
     }
