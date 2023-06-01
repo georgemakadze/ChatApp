@@ -26,7 +26,7 @@
 		0EDD08762A16856E00FF282B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDD08752A16856E00FF282B /* CoreDataManager.swift */; };
 		0EDD087A2A1B58D800FF282B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDD08792A1B58D800FF282B /* Reachability.swift */; };
 		0EDD087D2A1FC35B00FF282B /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDD087C2A1FC35B00FF282B /* LoadingCell.swift */; };
-		0EDD087F2A27259800FF282B /* ChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDD087E2A27259800FF282B /* ChatItem.swift */; };
+		0EDD08812A28A3FE00FF282B /* UICollectionViewCell+Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDD08802A28A3FE00FF282B /* UICollectionViewCell+Identifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +51,7 @@
 		0EDD08752A16856E00FF282B /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		0EDD08792A1B58D800FF282B /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		0EDD087C2A1FC35B00FF282B /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
-		0EDD087E2A27259800FF282B /* ChatItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItem.swift; sourceTree = "<group>"; };
+		0EDD08802A28A3FE00FF282B /* UICollectionViewCell+Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Identifier.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				0E433D4B29FCF74300512F87 /* Message.swift */,
-				0EDD087E2A27259800FF282B /* ChatItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -151,6 +150,7 @@
 			children = (
 				0E52E3C629F6D44C00845294 /* UIColor+Extantions.swift */,
 				0E40B2CA2A0E72BA00BBAB6D /* Date+Extantions.swift */,
+				0EDD08802A28A3FE00FF282B /* UICollectionViewCell+Identifier.swift */,
 			);
 			path = Extantions;
 			sourceTree = "<group>";
@@ -247,11 +247,11 @@
 				0E52E3C729F6D44C00845294 /* UIColor+Extantions.swift in Sources */,
 				0EDD08762A16856E00FF282B /* CoreDataManager.swift in Sources */,
 				0E433D4C29FCF74300512F87 /* Message.swift in Sources */,
+				0EDD08812A28A3FE00FF282B /* UICollectionViewCell+Identifier.swift in Sources */,
 				0E40B2DA2A162BC500BBAB6D /* ConversationViewController.swift in Sources */,
 				0EDD086E2A164BBF00FF282B /* CoreData.xcdatamodeld in Sources */,
 				0E40B2CB2A0E72BA00BBAB6D /* Date+Extantions.swift in Sources */,
 				0E40B2C92A04FDA800BBAB6D /* ModeButton.swift in Sources */,
-				0EDD087F2A27259800FF282B /* ChatItem.swift in Sources */,
 				0E433D4A29FCF0AD00512F87 /* ConversationViewModel.swift in Sources */,
 				0E52E3C229F0091700845294 /* ChatView.swift in Sources */,
 				0E52E3C429F2890800845294 /* MessageCell.swift in Sources */,

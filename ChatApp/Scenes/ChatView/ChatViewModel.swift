@@ -9,10 +9,15 @@ import Foundation
 
 struct ChatViewModel {
     let userID: Int
-    var chatItems: [ChatItem]
+    var messages: [Message]
+    var isLoading = false
+    
+    var chatItemsCount: Int {
+        return messages.count + (isLoading ? 1 : 0)
+    }
     
     mutating func addMessage(message: Message) {
-        chatItems.append(.message(message))
+        messages.append(message)
     }
     
     func isCurrentSender(messageSenderUserID: Int) -> Bool {

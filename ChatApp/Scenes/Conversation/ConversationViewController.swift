@@ -131,8 +131,6 @@ class ConversationViewController: UIViewController {
 extension ConversationViewController: ChatViewDelegate {
     func didSendMessage(chatView: ChatView, text: String, date: Date, userID: Int) {
         conversationViewModel.sendMessage(text: text, date: date, userID: userID)
-//        topMessageView.configure(viewModel: conversationViewModel.topViewModel)
-//        bottomMessageView.configure(viewModel: conversationViewModel.bottomViewModel)
         refreshChatViews()
     }
     
