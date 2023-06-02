@@ -116,9 +116,6 @@ extension ChatView: InputViewDelegate {
 }
 
 extension ChatView: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
-    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.chatItemsCount
